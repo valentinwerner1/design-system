@@ -1,0 +1,71 @@
+#!/bin/sh
+# Repo governance pre-commit hook.
+#
+# Installed by pointing git at this directory (tracked, so it travels with the
+# repo — unlike .git/hooks, which does not):
+#
+#     git config core.hooksPath .githooks
+#
+# Order matters: bookkeeping first (never blocks), gates second (may block).
+
+root=$(git rev-parse --show-toplevel) || exit 0
+
+# --- 1. Token accounting -----------------------------------------------------
+# Refresh docs/TOKEN_DRAIN.md so it lands in the same commit as the work it paid for.
+# Scoped with --repo: without it, committing here would rewrite every other
+# repo's file too.
+#
+# This must NEVER block a commit. It is a stats file; if the transcripts are
+# unreadable or python is missing, that is not a reason to stop you committing.
+DRAIN="$HOME/.claude/skills/repo-governance/scripts/token_drain.py"
+if [ -f "$DRAIN" ]; then
+    if python3 "$DRAIN" --write --repo "$root" >/dev/null 2>&1; then
+        for f in "$root/docs/TOKEN_DRAIN.md" "$root/TOKEN_DRAIN.md"; do
+            [ -f "$f" ] && git add "$f"
+        done
+    fi
+fi
+
+# --- 2. Gates ----------------------------------------------------------------
+# These MAY block.
+
+# Find an interpreter that actually has pytest. A repo's .venv may be a Windows
+# layout (Scripts/) or absent entirely on a machine that only holds the checkout.
+PY=""
+for cand in "$root/.venv/bin/python" "$root/.venv/Scripts/python.exe" python3 python; do
+    if command -v "$cand" >/dev/null 2>&1 || [ -x "$cand" ]; then
+        if "$cand" -c "import pytest" >/dev/null 2>&1; then PY="$cand"; break; fi
+    fi
+done
+
+# Conformance tests — the executable form of PROJECT.md § Constraints.
+if [ -f "$root/tests/test_conformance.py" ]; then
+    if [ -z "$PY" ]; then
+        # Can't run the gate — say so loudly rather than pretending it passed.
+        # Not a block: a missing dev environment is not a reason to refuse a commit.
+        echo "pre-commit: WARNING — no pytest found, conformance NOT checked." >&2
+    else
+        "$PY" -m pytest "$root/tests/test_conformance.py" -q --no-header || {
+            echo "" >&2
+            echo "pre-commit: conformance failed — see docs/PROJECT.md § Constraints." >&2
+            echo "A constraint you declared is no longer true. Fix it, or if the" >&2
+            echo "constraint itself is wrong, change docs/PROJECT.md and the test together." >&2
+            exit 1
+        }
+    fi
+fi
+
+# Lint / format / secret scan, on staged files only.
+#
+# Runs from here rather than via `pre-commit install`: core.hooksPath=.githooks makes
+# git ignore .git/hooks entirely, so the framework's own installed hook never fires.
+if [ -f "$root/.pre-commit-config.yaml" ]; then
+    if command -v pre-commit >/dev/null 2>&1; then
+        pre-commit run --hook-stage pre-commit || exit 1
+    else
+        echo "pre-commit: WARNING — .pre-commit-config.yaml present but pre-commit" >&2
+        echo "  is not installed; lint and secret scan NOT run. (pipx install pre-commit)" >&2
+    fi
+fi
+
+exit 0

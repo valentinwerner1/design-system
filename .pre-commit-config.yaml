@@ -1,0 +1,42 @@
+# pre-commit — fast, local checks on changed files.
+#
+# This runs from .githooks/pre-commit, NOT from `pre-commit install`. Setting
+# core.hooksPath=.githooks means git ignores .git/hooks entirely, so the framework's
+# own installed hook would never fire. Our hook calls `pre-commit run` explicitly.
+#
+# Keep this fast. Anything slower than a couple of seconds gets bypassed with
+# --no-verify, and a gate people route around is worse than no gate.
+# Slow, whole-tree work belongs in CI.
+
+default_install_hook_types: [pre-commit]
+fail_fast: false
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      # Refuse a commit that adds a private key. Cheapest possible win.
+      - id: detect-private-key
+      # Model weights, audio fixtures, and vendored binaries do not belong in git.
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.5
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Broader secret scanning than detect-private-key: tokens, cloud keys, bearer
+  # values. Worth the extra second given how permanent a leaked commit is.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks

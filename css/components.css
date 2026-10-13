@@ -1,0 +1,285 @@
+/* components.css: the shared pieces. Class names match upgrade-me where it had one.
+   Rules marked "option" are signatures to reach for deliberately, not by default.
+   How to use them well: docs/GUIDELINES.md. */
+
+/* ---- layout ------------------------------------------------------------ */
+.container { max-width: var(--width-app); margin: 0 auto; padding: 0 var(--gutter); }
+.container.site { max-width: var(--width-site); }
+.prose { max-width: var(--width-prose); }
+.stack > * + * { margin-top: var(--space-4); }
+.row { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.spread { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); }
+
+/* ---- type helpers -------------------------------------------------------- */
+.display {
+  font-size: var(--text-display);
+  line-height: 1.06;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+.lede { font-size: var(--text-md); color: var(--muted); max-width: 52ch; }
+.muted { color: var(--muted); }
+.faint { color: var(--faint); }
+.small { font-size: var(--text-sm); }
+/* Data next to words (durations, dates, counts, percentages) is set in mono. */
+.meta { font-family: var(--mono); font-size: var(--text-xs); color: var(--faint); letter-spacing: .02em; }
+
+/* Option: mono label in small spaced caps, above a headline. */
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--faint);
+}
+/* Option: a numbered label ("01"). Small text, so light mode uses ink: yellow on cream is 1.4:1. */
+.num { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--accent-ink); }
+/* Option: one phrase of a headline in yellow. Once per page at most. */
+.mark { color: var(--accent-mark); }
+
+/* ---- buttons ----------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+  background: var(--accent);
+  color: var(--on-accent);
+  font: var(--weight-semibold) 14px / 1 var(--font);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+}
+.btn:hover { color: var(--on-accent); filter: brightness(1.06); }
+.btn.ghost { background: transparent; color: var(--soft); border-color: var(--line-2); font-weight: var(--weight-medium); }
+.btn.ghost:hover { color: var(--text); border-color: var(--line-3); filter: none; }
+.btn.quiet { background: transparent; color: var(--muted); font-weight: var(--weight-medium); padding: 0 var(--space-3); }
+.btn.quiet:hover { color: var(--text); background: var(--surface-2); filter: none; }
+.btn.danger { background: transparent; color: var(--bad); border-color: var(--line-2); }
+.btn.danger:hover { border-color: var(--bad); filter: none; }
+.btn.sm { min-height: 32px; padding: 0 var(--space-3); font-size: var(--text-sm); }
+.btn.lg { min-height: 48px; padding: 0 26px; font-size: var(--text-base); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; filter: none; }
+.btn[aria-busy="true"] { cursor: progress; opacity: .7; }
+
+/* Round icon button: carousel arrows, theme toggle. */
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line-2);
+  background: transparent;
+  color: var(--soft);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+.icon-btn:hover { border-color: var(--line-3); background: var(--surface-2); color: var(--text); }
+.icon-btn.bare { border-color: transparent; width: 34px; height: 34px; }
+.icon-btn svg { width: 18px; height: 18px; }
+
+/* Arrow characters belong to the label, so they inherit its colour; they nudge on hover. */
+.arrow { display: inline-block; transition: transform var(--dur) var(--ease); }
+a:hover .arrow, .btn:hover .arrow { transform: translateX(2px); }
+
+/* ---- navigation -------------------------------------------------------- */
+/* Icon nav: symbols, each with aria-label and title. Active is ink with a yellow dot. */
+.icon-nav { display: flex; gap: var(--space-2); }
+.icon-nav a { position: relative; width: 40px; height: 40px; display: grid; place-items: center; color: var(--faint); border-radius: var(--radius-md); }
+.icon-nav a:hover { color: var(--text); }
+.icon-nav a[aria-current="page"], .icon-nav a.active { color: var(--text); }
+.icon-nav a[aria-current="page"]::after, .icon-nav a.active::after {
+  content: ""; position: absolute; bottom: 1px; left: 50%;
+  width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--accent-mark);
+}
+.icon-nav svg { width: 22px; height: 22px; }
+
+/* Tabs: the active one is ink over a yellow line. */
+.tabs { display: flex; gap: var(--space-5); border-bottom: 1px solid var(--line); }
+.tabs.bare { border-bottom: 0; gap: var(--space-4); }
+.tabs > * {
+  padding: var(--space-2) 0;
+  margin-bottom: -1px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--muted);
+  font: var(--weight-medium) var(--text-sm) / 1.4 var(--font);
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.tabs > *:hover { color: var(--text); }
+.tabs > [aria-selected="true"], .tabs > .active { color: var(--text); font-weight: var(--weight-semibold); border-bottom-color: var(--accent-mark); }
+
+/* ---- surfaces ---------------------------------------------------------- */
+/* No edges: in dark the green surface carries the card, in light a soft shadow does. */
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) 22px;
+  box-shadow: var(--shadow);
+  color: inherit;
+}
+/* Siblings line up: whatever sits in .foot is pinned to the bottom of the card. */
+.card > .foot { margin-top: auto; padding-top: var(--space-3); }
+a.card, .card.interactive { position: relative; transition: transform var(--dur) var(--ease); }
+a.card:hover, .card.interactive:hover { transform: translateY(var(--lift)); color: inherit; }
+
+/* Clickable cards carry the ↗ circle; it turns yellow on hover. */
+.go {
+  position: absolute; top: 12px; right: 12px;
+  width: 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid var(--line-2);
+  font-size: 13px; color: var(--soft);
+  transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+a:hover .go { border-color: var(--accent-mark); color: var(--accent-mark); }
+
+.panel { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+/* Feature panels: "next up" and calls to action. .lit adds the yellow glow (one per page). */
+.feature { background: var(--feature); border-radius: var(--radius-lg); }
+.feature.lit { background: linear-gradient(120deg, var(--accent-soft) 0%, var(--feature) 85%); }
+
+/* ---- rows: dense lists inside one surface, not a stack of cards ---------- */
+.rows { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; }
+.rows > * { position: relative; display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); color: inherit; }
+.rows > * + * { border-top: 1px solid var(--line); }
+.rows > a { transition: background-color var(--dur-fast) var(--ease); }
+.rows > a:hover { background: color-mix(in srgb, var(--surface-2) 45%, transparent); color: inherit; }
+.rows .grow { flex: 1; min-width: 0; }
+.rows .sub { color: var(--muted); font-size: var(--text-sm); }
+
+/* Selected row: lit from behind. A soft radial fill, and an outline whose yellow glows in the
+   middle of the top and bottom edges and fades out toward both sides. */
+.rows > .selected, .rows > [aria-current="true"], .rows > [aria-selected="true"] {
+  background: radial-gradient(ellipse 35% 120% at 50% 50%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 100%);
+}
+.rows > .selected::before, .rows > [aria-current="true"]::before, .rows > [aria-selected="true"]::before {
+  content: ""; position: absolute; inset: 0; padding: 1px; pointer-events: none;
+  background: radial-gradient(ellipse 35% 160% at 50% 50%, color-mix(in srgb, var(--accent-mark) 70%, transparent) 0%, transparent 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+/* The outline follows the list's rounded corners, and only where the list is rounded. */
+.rows > :first-child::before { border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg); }
+.rows > :last-child::before { border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg); }
+
+/* ---- status: mono caps in the status colour, bold, no pill ---------------- */
+/* Light mode uses the same colours as dark (about 2:1 on cream): a deliberate exception,
+   recorded in docs/ARCHITECTURE.md. Never use status colour for body text. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-status);
+  text-transform: uppercase;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--faint);
+}
+.badge.good { color: var(--good); }
+.badge.warn { color: var(--warn); }
+.badge.bad { color: var(--bad); }
+.badge.info { color: var(--info); }
+.badge.accent { color: var(--accent-ink); }
+
+/* Notices: a hairline and a status title, no box. Say what happened, then what to do. */
+.notice { padding-top: var(--space-3); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--text-sm); }
+.notice .title {
+  display: block; margin-bottom: 4px;
+  font-family: var(--mono); font-size: 11px; font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-status); text-transform: uppercase; color: var(--text);
+}
+.notice.good .title { color: var(--good); }
+.notice.warn .title { color: var(--warn); }
+.notice.bad .title { color: var(--bad); }
+.notice.info .title { color: var(--info); }
+
+/* ---- forms ------------------------------------------------------------- */
+.field { display: grid; gap: 6px; }
+.field > label { font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--soft); }
+.field > .hint { font-size: var(--text-sm); color: var(--faint); }
+.field > .error { font-size: var(--text-sm); color: var(--bad); }
+
+.input, .select, .textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.textarea { min-height: 96px; resize: vertical; line-height: var(--leading-body); }
+.input::placeholder, .textarea::placeholder { color: var(--faint); }
+.input:hover, .select:hover, .textarea:hover { border-color: var(--line-3); }
+.input:focus-visible, .select:focus-visible, .textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+.input[aria-invalid="true"], .textarea[aria-invalid="true"] { border-color: var(--bad); }
+
+.check { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+
+/* ---- progress: a 2px line with a mono percentage ------------------------ */
+.pbar { display: flex; align-items: center; gap: var(--space-3); }
+.progress { flex: 1; height: 2px; border-radius: 1px; background: var(--surface-2); overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--accent-mark); transition: width var(--dur-reveal) var(--ease); }
+.pbar > .meta { font-size: 11px; min-width: 3ch; text-align: right; }
+
+/* ---- stat: a big tabular number over a label ----------------------------- */
+.stat .big { font-size: 34px; font-weight: var(--weight-bold); letter-spacing: -.035em; line-height: 1; }
+.stat .label { font-size: var(--text-sm); color: var(--muted); margin: var(--space-2) 0; }
+
+/* ---- empty state: one sentence and a way forward, no box ----------------- */
+.empty { display: grid; justify-items: start; gap: var(--space-2); padding: var(--space-6) 0; color: var(--muted); }
+.empty > strong { color: var(--text); font-size: var(--text-md); }
+
+/* ---- charts ------------------------------------------------------------ */
+/* Stacked bars with direct labels: the label row shares the bars' grid, so every name sits
+   exactly over its segment. Fall back to .chart-key when labels would collide.
+   Hovering any [data-s] (segment, label or key) fades every other series. */
+.chart { display: grid; gap: var(--space-3); }
+.chart .bar-row { display: grid; grid-template-columns: 90px minmax(0, 1fr) 56px; gap: var(--space-3); align-items: center; font-size: var(--text-sm); }
+.chart .track { display: flex; gap: 2px; height: 14px; }
+.chart .track > span { border-radius: 2px; transition: opacity var(--dur) var(--ease); }
+.chart .labels { height: auto; }
+.chart .labels > span {
+  display: flex; align-items: center; gap: 5px; min-width: 0; white-space: nowrap;
+  font-family: var(--mono); font-size: 11px; color: var(--muted); border-radius: 0;
+}
+.chart .labels > span::before { content: ""; width: 2px; height: 12px; border-radius: 1px; background: var(--c); flex: none; }
+.chart-key { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-2); }
+.chart-key > span {
+  display: inline-flex; align-items: center; gap: 7px; transition: opacity var(--dur) var(--ease);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+.chart-key > span::before { content: ""; width: 14px; height: 3px; border-radius: 2px; background: var(--c); }
+.chart-key em { font-style: normal; color: var(--faint); }
+.chart:has([data-s="1"]:hover) [data-s]:not([data-s="1"]),
+.chart:has([data-s="2"]:hover) [data-s]:not([data-s="2"]),
+.chart:has([data-s="3"]:hover) [data-s]:not([data-s="3"]),
+.chart:has([data-s="4"]:hover) [data-s]:not([data-s="4"]),
+.chart:has([data-s="5"]:hover) [data-s]:not([data-s="5"]) { opacity: .18; }
+
+/* ---- motion: entrance ---------------------------------------------------- */
+/* Opt-in with data-reveal; theme.js adds .in when the element scrolls into view.
+   Without JS nothing is hidden, because the hidden state needs .js on <html>. */
+.js [data-reveal] { opacity: 0; transform: translateY(var(--reveal-rise)); transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease); }
+.js [data-reveal].in { opacity: 1; transform: none; }

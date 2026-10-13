@@ -1,0 +1,20 @@
+/* fonts.css: self-hosted, so no visitor IP goes to Google (GDPR) and offline apps
+   still get the real faces. Files come from scripts/fetch-fonts.sh.
+   Variable fonts: one file covers every weight, so 650 renders as 650. */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("../fonts/archivo-latin-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono-latin-var.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}

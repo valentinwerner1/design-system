@@ -1,0 +1,166 @@
+/* tokens.css: every colour, size and timing in the system.
+   Dark is the design target; light is the same roles on cream.
+   Names follow upgrade-me so it can adopt this file without renames.
+   Components read these roles, never raw hex. */
+
+:root {
+  /* ---- type ---------------------------------------------------------- */
+  --font: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* One scale, 15px base. Display steps are fluid so the hero needs no breakpoints. */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: clamp(26px, 2.8vw, 34px);
+  --text-display: clamp(36px, 5.4vw, 74px);
+
+  --leading-tight: 1.08;
+  --leading-snug: 1.35;
+  --leading-body: 1.65;
+
+  /* Headlines get tighter as they grow; this is most of the "look". */
+  --tracking-display: -0.038em;
+  --tracking-h1: -0.03em;
+  --tracking-h2: -0.02em;
+  --tracking-h3: -0.01em;
+  --tracking-label: 0.14em;
+  --tracking-status: 0.08em;
+
+  /* Archivo is loaded as a variable font (100-900), so these render exactly. */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 650;
+
+  /* ---- space (4px grid) ---------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-14: 56px;
+  --space-20: 80px;
+  --gutter: clamp(16px, 4.4vw, 64px);
+
+  --width-prose: 68ch;
+  --width-app: 1200px;
+  --width-site: 1560px;
+
+  /* ---- shape --------------------------------------------------------- */
+  --radius-sm: 4px;   /* fields, chips, small controls */
+  --radius-md: 6px;   /* menus, tooltips, inner blocks */
+  --radius-lg: 8px;   /* cards, panels, lists */
+  --radius-pill: 999px;
+  --radius-button: var(--radius-pill);
+
+  /* ---- motion: settle ------------------------------------------------ */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --dur-fast: 120ms;    /* colour and background changes */
+  --dur: 180ms;         /* hover lift, small moves */
+  --dur-reveal: 320ms;  /* entrance of a section */
+  --lift: -2px;
+  --reveal-rise: 8px;
+
+  --z-sticky: 10;
+  --z-menu: 20;
+  --z-overlay: 30;
+  --z-toast: 40;
+
+  /* ---- colour: dark (default) ---------------------------------------- */
+  --bg: #100f0e;
+  --surface: #1c201c;     /* cards: a deep green graphite against the warm page */
+  --surface-2: #252a25;   /* hover wash, inputs on cards, tracks */
+  --feature: var(--surface);  /* "next up" banner and call-to-action panels */
+  --line: #262320;      /* dividers between rows and sections */
+  --line-2: #38342d;    /* control borders */
+  --line-3: #6b6355;    /* hovered control borders */
+
+  --text: #f6f2ea;
+  --soft: #d8d0c3;      /* ghost buttons, field labels */
+  --muted: #a8a094;     /* supporting copy */
+  --faint: #9b9488;     /* labels and metadata; lifted so it still reads on the green cards */
+
+  --accent: #ffc500;        /* fills: primary button, progress, selection */
+  --on-accent: #1a140b;
+  --accent-ink: #ffc500;    /* link text */
+  --accent-mark: #ffc500;   /* logo, rings, lines: brand yellow in both modes */
+  --link-underline: transparent;
+  --accent-soft: rgba(255, 197, 0, .12);
+
+  /* One colour set for both themes. Status and data share hues on purpose:
+     info = data-1, good = data-2, warn = data-5. Warning is orange so it is
+     never mistaken for the brand yellow. */
+  --info: #6ea8ff;
+  --good: #5cc48a;
+  --warn: #f0a060;
+  --bad: #ff7a6b;
+  --data-1: var(--info);
+  --data-2: var(--good);
+  --data-3: #c79bff;
+  --data-4: #ff8fb0;
+  --data-5: var(--warn);
+
+  /* No shadows in dark: depth comes from the green surface against the page. */
+  --shadow: none;
+  --shadow-pop: 0 8px 30px rgba(0, 0, 0, .45);
+  color-scheme: dark;
+}
+
+/* ---- colour: light ---------------------------------------------------- */
+/* Repeated twice on purpose: once for an explicit choice, once for the system
+   preference when no choice was made. Keep both blocks identical. */
+:root[data-theme="light"] {
+  --bg: #faf7f2;
+  --surface: #fffcf6;
+  --surface-2: #efe8dc;
+  --feature: #ebe4d6;
+  --line: #e3dbcc;
+  --line-2: #d3c9b6;
+  --line-3: #a89e8c;
+
+  --text: #17140f;
+  --soft: #3d372e;
+  --muted: #5a5348;
+  --faint: #6b6458;
+
+  /* Yellow is unreadable as text on cream (1.4:1): links are ink, marked by a yellow underline. */
+  --accent-ink: #17140f;
+  --link-underline: #ffc500;
+  --accent-soft: #fbefc6;
+
+  --shadow: 0 1px 3px rgba(40, 30, 10, .08), 0 4px 12px rgba(40, 30, 10, .05);
+  --shadow-pop: 0 8px 30px rgba(40, 30, 10, .14);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #faf7f2;
+    --surface: #fffcf6;
+    --surface-2: #efe8dc;
+    --feature: #ebe4d6;
+    --line: #e3dbcc;
+    --line-2: #d3c9b6;
+    --line-3: #a89e8c;
+
+    --text: #17140f;
+    --soft: #3d372e;
+    --muted: #5a5348;
+    --faint: #6b6458;
+
+    --accent-ink: #17140f;
+    --link-underline: #ffc500;
+    --accent-soft: #fbefc6;
+
+    --shadow: 0 1px 3px rgba(40, 30, 10, .08), 0 4px 12px rgba(40, 30, 10, .05);
+    --shadow-pop: 0 8px 30px rgba(40, 30, 10, .14);
+    color-scheme: light;
+  }
+}

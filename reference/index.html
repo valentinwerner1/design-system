@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design system reference</title>
+  <script src="../js/theme.js"></script>
+  <link rel="stylesheet" href="../css/fonts.css">
+  <!-- Local preview only, until scripts/fetch-fonts.sh has run. Apps never load this. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@100..800&display=swap">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    /* Layout of the reference page itself; not part of the system. */
+    .ref-top { position: sticky; top: 0; z-index: var(--z-sticky); background: var(--bg); border-bottom: 1px solid var(--line); }
+    .ref-top .container { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); height: 60px; }
+    .ref-nav { display: flex; gap: var(--space-5); font-size: var(--text-sm); }
+    .ref-nav a { color: var(--muted); }
+    .ref-nav a:hover { color: var(--text); }
+    section.ref { padding: var(--space-14) 0; border-bottom: 1px solid var(--line); }
+    section.ref > .container > h2 { margin: var(--space-2) 0 var(--space-6); }
+    .label { display: block; margin: var(--space-10) 0 var(--space-3); }
+    .label:first-of-type { margin-top: 0; }
+    .frame { border: 1px solid var(--line-2); border-radius: var(--radius-lg); overflow: hidden; background: var(--bg); }
+    .frame > .in { padding: var(--space-8); }
+    .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-3); }
+    .sw > div { border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); box-shadow: var(--shadow); }
+    .sw .chip { height: 52px; }
+    .sw .meta { display: block; padding: var(--space-2) var(--space-3); }
+    .sw b { display: block; font: var(--weight-semibold) var(--text-sm) var(--font); color: var(--text); letter-spacing: 0; }
+    .scale > div { display: grid; grid-template-columns: 130px 1fr; gap: var(--space-4); align-items: baseline; padding: var(--space-2) 0; border-top: 1px solid var(--line); }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-8); align-items: start; }
+
+    /* pattern scaffolding, copied by apps as needed */
+    .app-top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: var(--weight-bold); letter-spacing: -.02em; font-size: var(--text-md); }
+    .brand svg { width: 26px; height: 26px; color: var(--accent-mark); }
+    .tools { justify-self: end; display: flex; gap: var(--space-2); }
+    .banner { display: grid; grid-template-columns: 1.2fr 1fr; }
+    .banner > div { padding: var(--space-8); }
+    .banner h2 { font-size: 30px; letter-spacing: var(--tracking-h1); margin: var(--space-2) 0; }
+    .banner .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); align-content: center; }
+    .sec-h { display: flex; align-items: baseline; justify-content: space-between; margin: var(--space-10) 0 var(--space-4); }
+    .sec-h h3 { font-size: var(--text-md); }
+    .route-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-5); }
+    .thumb { position: relative; aspect-ratio: 5/3; border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow); display: flex; align-items: flex-end; padding: var(--space-4); margin-bottom: var(--space-3); }
+    .cta { display: flex; justify-content: space-between; align-items: center; gap: var(--space-6); flex-wrap: wrap; padding: var(--space-8); margin-top: var(--space-8); }
+    .cta h3 { font-size: var(--text-2xl); letter-spacing: var(--tracking-h1); }
+    .site-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); padding-top: var(--space-5); font-size: var(--text-sm); color: var(--faint); }
+    .site-foot nav { display: flex; gap: var(--space-6); }
+    .toolbar { display: flex; gap: var(--space-2); align-items: center; padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--line); }
+    .toolbar .input { max-width: 260px; margin-left: auto; min-height: 34px; }
+    .rec-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+    .two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: var(--space-6); }
+    .talk { display: flex; width: 120px; height: 6px; gap: 2px; }
+    .talk > span { border-radius: 2px; }
+    .spk { display: inline-flex; align-items: center; gap: 6px; margin-right: 8px; }
+    .spk i { width: 8px; height: 8px; border-radius: 50%; }
+    .dialog { padding: var(--space-6); box-shadow: var(--shadow-pop); }
+    .dialog h4 { margin-bottom: var(--space-4); }
+    @media (max-width: 860px) { .banner, .two-col { grid-template-columns: 1fr; } .ref-nav { display: none; } }
+  </style>
+</head>
+<body>
+
+<header class="ref-top">
+  <div class="container site">
+    <strong style="letter-spacing: var(--tracking-h3)">Design system</strong>
+    <nav class="ref-nav">
+      <a href="#foundations">Foundations</a><a href="#components">Components</a><a href="#patterns">Patterns</a>
+    </nav>
+    <button class="icon-btn" id="theme-btn" type="button" aria-label="Switch theme" title="Switch theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================================================================ hero -->
+<section class="ref">
+  <div class="container site" style="display:grid; gap: var(--space-6); padding-block: var(--space-10)">
+    <span class="eyebrow">Pattern: hero</span>
+    <div class="display">I get engineering and business to agree on <span class="mark">something real.</span></div>
+    <p class="lede">Then I build it. I grew a GenAI Academy to 5,000+ monthly users: product vision, a real technical backbone, and a lot of listening.</p>
+    <div class="row"><a class="btn lg" href="#patterns">More about me</a><a class="btn ghost lg" href="#patterns">See my CV</a></div>
+  </div>
+</section>
+
+<!-- ========================================================= foundations -->
+<section class="ref" id="foundations">
+  <div class="container site">
+    <span class="eyebrow">Foundations</span>
+    <h2>Warm page, green cards, one yellow</h2>
+
+    <span class="eyebrow label">Surfaces</span>
+    <div class="sw">
+      <div><div class="chip" style="background:var(--bg); box-shadow: inset 0 0 0 1px var(--line)"></div><span class="meta"><b>Page</b>--bg</span></div>
+      <div><div class="chip" style="background:var(--surface)"></div><span class="meta"><b>Card</b>--surface</span></div>
+      <div><div class="chip" style="background:var(--surface-2)"></div><span class="meta"><b>Wash, track</b>--surface-2</span></div>
+      <div><div class="chip" style="background:var(--feature)"></div><span class="meta"><b>Feature panel</b>--feature</span></div>
+      <div><div class="chip" style="background:var(--accent)"></div><span class="meta"><b>Accent</b>--accent</span></div>
+    </div>
+
+    <span class="eyebrow label">Text</span>
+    <div class="scale">
+      <div><span class="meta">--text</span><span>Main copy and headlines</span></div>
+      <div><span class="meta">--soft</span><span style="color:var(--soft)">Ghost buttons, field labels</span></div>
+      <div><span class="meta">--muted</span><span class="muted">Supporting copy</span></div>
+      <div><span class="meta">--faint</span><span class="faint">Labels and metadata, the lowest grey allowed for text</span></div>
+    </div>
+
+    <span class="eyebrow label">Status and data share one set</span>
+    <div class="sw">
+      <div><div class="chip" style="background:var(--info)"></div><span class="meta"><b>Info, data 1</b>--info</span></div>
+      <div><div class="chip" style="background:var(--good)"></div><span class="meta"><b>Good, data 2</b>--good</span></div>
+      <div><div class="chip" style="background:var(--data-3)"></div><span class="meta"><b>Data 3</b>--data-3</span></div>
+      <div><div class="chip" style="background:var(--data-4)"></div><span class="meta"><b>Data 4</b>--data-4</span></div>
+      <div><div class="chip" style="background:var(--warn)"></div><span class="meta"><b>Warn, data 5</b>--warn</span></div>
+      <div><div class="chip" style="background:var(--bad)"></div><span class="meta"><b>Bad</b>--bad</span></div>
+    </div>
+
+    <span class="eyebrow label">Type</span>
+    <div class="scale">
+      <div><span class="meta">display</span><span class="display">Rough, used, then real.</span></div>
+      <div><span class="meta">h1</span><h1>Where to go next</h1></div>
+      <div><span class="meta">h2</span><h2>Treating curriculum as a product</h2></div>
+      <div><span class="meta">h3</span><h3>Standup Ledger</h3></div>
+      <div><span class="meta">base 15</span><p>I'd rather ship something rough that gets used than something polished that stays in discussions. Read <a href="#foundations">the method</a> for the long version.</p></div>
+      <div><span class="meta">meta</span><span class="row" style="gap: var(--space-5)"><span class="meta">32:10</span><span class="meta">2d ago</span><span class="meta">5 of 12</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================== components -->
+<section class="ref" id="components">
+  <div class="container site">
+    <span class="eyebrow">Components</span>
+    <h2>The shared pieces</h2>
+    <div class="demo-grid">
+      <div class="stack">
+        <span class="eyebrow">Buttons</span>
+        <div class="row"><button class="btn">Save</button><button class="btn ghost">Cancel</button><button class="btn quiet">Skip</button></div>
+        <div class="row"><button class="btn sm">Small</button><button class="btn danger sm">Delete</button><button class="icon-btn" aria-label="Previous">←</button><button class="icon-btn" aria-label="Next">→</button></div>
+        <a href="#components">Read the method <span class="arrow">→</span></a>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">Status</span>
+        <div class="row" style="gap: var(--space-4)"><span class="badge good">Passed</span><span class="badge warn">Changed</span><span class="badge bad">Failed</span><span class="badge info">New</span><span class="badge accent">Next up</span><span class="badge">Draft</span></div>
+        <div class="notice warn"><span class="title">Source changed</span>Re-check this module before you rely on it.</div>
+        <div class="notice bad"><span class="title">Couldn't reach the server</span>Your notes are kept locally. Try again in a minute.</div>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">Form</span>
+        <div class="field"><label for="f1">Session name</label><input class="input" id="f1" placeholder="Weekly sync"><span class="hint">Shown in the session list.</span></div>
+        <div class="field"><label for="f2">Email</label><input class="input" id="f2" value="not-an-email" aria-invalid="true"><span class="error">That doesn't look like an email address. Check for a missing @.</span></div>
+        <label class="check"><input type="checkbox" checked> Remember my theme</label>
+      </div>
+      <div class="stack">
+        <span class="eyebrow">Tabs and progress</span>
+        <div class="tabs" role="tablist"><button role="tab" aria-selected="true">Read</button><button role="tab" aria-selected="false">Watch</button><button role="tab" aria-selected="false">Test</button></div>
+        <div class="pbar"><div class="progress"><span style="width:42%"></span></div><span class="meta">42%</span></div>
+        <span class="eyebrow">Empty state</span>
+        <div class="empty"><strong>No sessions match "budget"</strong><span>Search covers transcripts and speaker names.</span><a href="#components">Clear search <span class="arrow">→</span></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ patterns -->
+<section class="ref" id="patterns">
+  <div class="container site">
+    <span class="eyebrow">Patterns</span>
+    <h2>Assembled screens</h2>
+
+    <!-- app home -->
+    <span class="eyebrow label">App home: feature banner, aligned cards, list with a selected row</span>
+    <div class="frame">
+      <div class="app-top">
+        <span class="brand"><svg viewBox="0 -1 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15 L16 4 L23 11 M27 26 L16 15 L9 22" stroke-width="3.2"/><circle cx="25.5" cy="13.5" r="2.4" stroke-width="2"/><circle cx="6.5" cy="24.5" r="2.4" stroke-width="2"/></svg>upgrade-me</span>
+        <nav class="icon-nav">
+          <a href="#patterns" aria-current="page" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h3.5v-5.5h3V20H17a1 1 0 0 0 1-1v-9"/></svg></a>
+          <a href="#patterns" aria-label="Catalog" title="Catalog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></a>
+          <a href="#patterns" aria-label="News" title="News"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h3a1 1 0 0 1 1 1v10a2 2 0 0 1-4 0V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a3 3 0 0 0 3 3h11"/><path d="M8 8h4M8 12h4M8 16h4"/></svg></a>
+        </nav>
+        <div class="tools"><button class="icon-btn bare" aria-label="Show me around" title="Show me around">?</button></div>
+      </div>
+      <div class="in">
+        <div class="feature lit banner">
+          <div>
+            <span class="eyebrow">Next up</span>
+            <h2>How LLMs are trained</h2>
+            <p class="muted">Pre-training, fine-tuning and RLHF, in 4 modules. About 35 minutes.</p>
+            <div class="row" style="margin-top: var(--space-5)"><a class="btn" href="#patterns">Continue <span class="arrow">→</span></a><a class="btn ghost" href="#patterns">Test out</a></div>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="big">42%</div><div class="label">Using AI</div><div class="pbar"><div class="progress"><span style="width:42%"></span></div></div></div>
+            <div class="stat"><div class="big">18%</div><div class="label">Building AI</div><div class="pbar"><div class="progress"><span style="width:18%"></span></div></div></div>
+            <div class="stat"><div class="big">7</div><div class="label">Topics confident</div><span class="badge accent">2 re-checks due</span></div>
+          </div>
+        </div>
+
+        <div class="sec-h"><h3>Areas</h3><div class="tabs bare" role="tablist"><button role="tab" aria-selected="true">All</button><button role="tab">In progress</button><button role="tab">Done</button></div></div>
+        <div class="grid">
+          <a class="card" href="#patterns"><span class="go">↗</span><h4>Using AI</h4><p class="muted small">Prompting, tools, and knowing when not to.</p><div class="foot"><div class="pbar"><div class="progress"><span style="width:42%"></span></div><span class="meta">42%</span></div><div class="spread" style="margin-top: var(--space-3)"><span class="meta">5 of 12 topics</span><span class="badge good">On track</span></div></div></a>
+          <a class="card" href="#patterns"><span class="go">↗</span><h4>Building AI</h4><p class="muted small">Agents, retrieval, evaluation, serving.</p><div class="foot"><div class="pbar"><div class="progress"><span style="width:18%"></span></div><span class="meta">18%</span></div><div class="spread" style="margin-top: var(--space-3)"><span class="meta">2 of 11 topics</span><span class="badge warn">1 changed</span></div></div></a>
+          <a class="card" href="#patterns"><span class="go">↗</span><h4>Designing AI systems</h4><p class="muted small">Architecture, cost, and securing agents and the tools they call.</p><div class="foot"><div class="pbar"><div class="progress"><span style="width:0%"></span></div><span class="meta">0%</span></div><div class="spread" style="margin-top: var(--space-3)"><span class="meta">0 of 8 topics</span><span class="badge">Optional</span></div></div></a>
+        </div>
+
+        <div class="sec-h"><h3>Waiting on you</h3><a class="small" href="#patterns">See all <span class="arrow">→</span></a></div>
+        <div class="rows">
+          <a href="#patterns" aria-current="true"><span class="grow">World models<div class="sub">Source changed since you passed it</div></span><span class="badge warn">Changed</span><span class="meta">2d ago</span></a>
+          <a href="#patterns"><span class="grow">Computer use and browser agents<div class="sub">New topic in Building AI</div></span><span class="badge info">New</span><span class="meta">4d ago</span></a>
+          <a href="#patterns"><span class="grow">Open and local models<div class="sub">Re-check due</div></span><span class="badge">Re-check</span><span class="meta">1w ago</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- site section -->
+    <span class="eyebrow label">Site: route cards, call to action, status footer</span>
+    <div class="frame">
+      <div class="in">
+        <div class="spread" style="margin-bottom: var(--space-6)">
+          <div><h2>Where to go next</h2><div class="muted" style="margin-top:6px">Showing 1 to 3 of 6</div></div>
+          <div class="row"><button class="icon-btn" aria-label="Previous">←</button><button class="icon-btn" aria-label="Next">→</button></div>
+        </div>
+        <div class="route-cards">
+          <a href="#patterns" style="color:inherit"><div class="thumb"><span class="go">↗</span><span class="eyebrow">Photo, candid</span></div><strong style="font-size:var(--text-lg); letter-spacing:-.018em">About me</strong><p class="muted small" style="margin:6px 0">Where I come from, what I'm good at, and the three things I'll always argue about.</p><span class="small" style="color:var(--accent-ink)">The long version <span class="arrow">→</span></span></a>
+          <a href="#patterns" style="color:inherit"><div class="thumb"><span class="go">↗</span><span class="eyebrow">Screenshot, academy</span></div><strong style="font-size:var(--text-lg); letter-spacing:-.018em">GenAI Academy</strong><p class="muted small" style="margin:6px 0">Zero to 5,000+ monthly users. A case study on treating curriculum as a product.</p><span class="small" style="color:var(--accent-ink)">Read case study <span class="arrow">→</span></span></a>
+          <a href="#patterns" style="color:inherit"><div class="thumb"><span class="go">↗</span><span class="eyebrow">Screenshot, ledger</span></div><strong style="font-size:var(--text-lg); letter-spacing:-.018em">Side projects</strong><p class="muted small" style="margin:6px 0">Small tools that escaped the weekend: promptlint, Standup Ledger, and whatever's next.</p><span class="small" style="color:var(--accent-ink)">See all three <span class="arrow">→</span></span></a>
+        </div>
+        <div class="feature cta">
+          <div><h3>Building something rough that should get used?</h3><p class="muted" style="margin-top:10px">I'm always up for small tools, AI enablement talk, or a good argument.</p></div>
+          <div class="row"><a class="btn lg" href="#patterns">Say hello</a><a class="btn ghost lg" href="#patterns">See my CV</a></div>
+        </div>
+        <div class="site-foot"><span>Currently: scaling enablement past the pilot trap.</span><nav><a href="#patterns" class="faint">Email</a><a href="#patterns" class="faint">GitHub</a><a href="#patterns" class="faint">LinkedIn</a></nav></div>
+      </div>
+    </div>
+
+    <!-- tool -->
+    <span class="eyebrow label">Tool: toolbar, list with data colours, dialog, notices</span>
+    <div class="frame">
+      <div class="toolbar"><button class="btn sm"><span class="rec-dot"></span>Record</button><button class="btn ghost sm">Import audio</button><button class="btn quiet sm">Export</button><input class="input" placeholder="Search transcripts" aria-label="Search transcripts"></div>
+      <div class="in two-col">
+        <div class="stack">
+          <div class="tabs" role="tablist"><button role="tab" aria-selected="true">Sessions</button><button role="tab">Speakers</button><button role="tab">Voiceprints</button></div>
+          <div class="rows">
+            <a href="#patterns" aria-current="true"><span class="grow">Standup 14 Oct<div class="sub"><span class="spk"><i style="background:var(--data-1)"></i>Markus</span><span class="spk"><i style="background:var(--data-2)"></i>Valentin</span><span class="spk"><i style="background:var(--data-3)"></i>Lea</span></div></span><span class="talk"><span style="flex:4;background:var(--data-1)"></span><span style="flex:3;background:var(--data-2)"></span><span style="flex:2;background:var(--data-3)"></span></span><span class="meta">32:10</span></a>
+            <a href="#patterns"><span class="grow">Client sync<div class="sub"><span class="spk"><i style="background:var(--data-4)"></i>Jana</span><span class="spk"><i style="background:var(--data-5)"></i>Tim</span><span class="spk"><i style="background:var(--data-2)"></i>Valentin</span></div></span><span class="talk"><span style="flex:3;background:var(--data-4)"></span><span style="flex:4;background:var(--data-5)"></span><span style="flex:2;background:var(--data-2)"></span></span><span class="meta">58:42</span></a>
+            <a href="#patterns"><span class="grow">1:1 with Markus<div class="sub"><span class="spk"><i style="background:var(--data-1)"></i>Markus</span><span class="spk"><i style="background:var(--data-2)"></i>Valentin</span></div></span><span class="talk"><span style="flex:5;background:var(--data-1)"></span><span style="flex:4;background:var(--data-2)"></span></span><span class="meta">24:05</span></a>
+          </div>
+          <div class="notice warn"><span class="title">Speaker profile changed</span>Similarities in this session were recalculated. Check the labels before exporting.</div>
+        </div>
+        <div class="stack">
+          <div class="panel dialog">
+            <h4>Rename speaker</h4>
+            <div class="field"><label for="sp">Name</label><input class="input" id="sp" value="Speaker 3"><span class="hint">Applies to every session with this voiceprint.</span></div>
+            <div class="row" style="margin-top: var(--space-5); justify-content: flex-end"><button class="btn ghost">Cancel</button><button class="btn">Save</button></div>
+          </div>
+          <div class="notice good"><span class="title">Exported</span>Standup 14 Oct saved as Markdown.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- chart -->
+    <span class="eyebrow label">Chart: direct labels first, the key when labels would collide</span>
+    <div class="frame">
+      <div class="in two-col">
+        <div class="panel" style="padding: var(--space-6)">
+          <h4 style="margin-bottom: var(--space-4)">Talk time by meeting</h4>
+          <div class="chart">
+            <div class="bar-row"><span></span><div class="track labels"><span data-s="1" style="flex:2; --c:var(--data-1)">Markus</span><span data-s="2" style="flex:2; --c:var(--data-2)">Valentin</span><span data-s="3" style="flex:1; --c:var(--data-3)">Lea</span><span data-s="4" style="flex:3; --c:var(--data-4)">Jana</span><span data-s="5" style="flex:4; --c:var(--data-5)">Tim</span></div><span></span></div>
+            <div class="bar-row"><span>Client sync</span><div class="track"><span data-s="1" style="flex:2;background:var(--data-1)"></span><span data-s="2" style="flex:2;background:var(--data-2)"></span><span data-s="3" style="flex:1;background:var(--data-3)"></span><span data-s="4" style="flex:3;background:var(--data-4)"></span><span data-s="5" style="flex:4;background:var(--data-5)"></span></div><span class="meta">58 min</span></div>
+            <div class="bar-row"><span>Standup</span><div class="track"><span data-s="1" style="flex:4;background:var(--data-1)"></span><span data-s="2" style="flex:3;background:var(--data-2)"></span><span data-s="3" style="flex:2;background:var(--data-3)"></span><span data-s="4" style="flex:1;background:var(--data-4)"></span></div><span class="meta">32 min</span></div>
+            <div class="bar-row"><span>Retro</span><div class="track"><span data-s="1" style="flex:3;background:var(--data-1)"></span><span data-s="2" style="flex:1;background:var(--data-2)"></span><span data-s="3" style="flex:3;background:var(--data-3)"></span><span data-s="4" style="flex:2;background:var(--data-4)"></span><span data-s="5" style="flex:2;background:var(--data-5)"></span></div><span class="meta">45 min</span></div>
+          </div>
+        </div>
+        <div class="panel" style="padding: var(--space-6)">
+          <h4 style="margin-bottom: var(--space-4)">Narrow: key as fallback</h4>
+          <div class="chart">
+            <div class="bar-row" style="grid-template-columns: 60px minmax(0,1fr)"><span>Mon</span><div class="track"><span data-s="1" style="flex:3;background:var(--data-1)"></span><span data-s="2" style="flex:2;background:var(--data-2)"></span><span data-s="3" style="flex:1;background:var(--data-3)"></span></div></div>
+            <div class="bar-row" style="grid-template-columns: 60px minmax(0,1fr)"><span>Tue</span><div class="track"><span data-s="1" style="flex:1;background:var(--data-1)"></span><span data-s="2" style="flex:4;background:var(--data-2)"></span><span data-s="3" style="flex:2;background:var(--data-3)"></span></div></div>
+            <div class="chart-key"><span data-s="1" style="--c:var(--data-1)">Markus <em>31%</em></span><span data-s="2" style="--c:var(--data-2)">Valentin <em>46%</em></span><span data-s="3" style="--c:var(--data-3)">Lea <em>23%</em></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+  document.getElementById("theme-btn").addEventListener("click", function () { window.toggleTheme(); });
+</script>
+</body>
+</html>

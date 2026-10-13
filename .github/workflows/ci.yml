@@ -1,0 +1,92 @@
+# CI — the gates a local hook structurally cannot provide.
+#
+# Three of them, and only three:
+#   1. Unbypassable. `git commit --no-verify` skips the local hook; it cannot skip this.
+#   2. Clean environment. A warm .venv hides undeclared dependencies; a from-scratch
+#      install is the only thing that catches them.
+#   3. Whole-tree work that is too slow for a pre-commit hook.
+#
+# What CI deliberately does NOT cover: GPU inference, platform-specific audio/UI
+# (WASAPI, WebView2), and anything behind a gated model download. Those stay manual.
+# A green check here means "the invariants hold", not "the app works".
+
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # Pin the version: an unpinned linter means CI can break on someone
+      # else's release, with no change from you.
+      - uses: astral-sh/ruff-action@v3
+        with:
+          version: "0.16.0"
+          args: check --output-format=github
+      - uses: astral-sh/ruff-action@v3
+        with:
+          version: "0.16.0"
+          args: format --check --diff
+
+  conformance:
+    # The constraints declared in docs/PROJECT.md. These are static checks over the
+    # source tree and import no project code, so they need nothing but pytest.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0   # test_no_secret_files_tracked needs the real index
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: pytest tests/test_conformance.py -q
+
+  install:
+    # Catches undeclared dependencies — the class of bug a warm local venv can never
+    # surface, and the reason this job exists at all.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install from declared dependencies only
+        run: |
+          python -m venv /tmp/clean
+          if   [ -f pyproject.toml ];    then /tmp/clean/bin/pip install -e .
+          elif [ -f requirements.txt ]; then /tmp/clean/bin/pip install -r requirements.txt
+          else echo "no dependency manifest — nothing to verify"; exit 0
+          fi
+      - name: Import every top-level module
+        # A package that installs but cannot be imported is still broken.
+        run: |
+          [ -d src ] && root=src || root=.
+          find "$root" -maxdepth 2 -name '__init__.py' -not -path '*/.*' \
+            | sed "s|^$root/||; s|/__init__.py$||; s|/|.|g" \
+            | while read -r m; do
+                echo "import $m"
+                /tmp/clean/bin/python -c "import $m" || exit 1
+              done
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0   # scan history, not just the tip
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
