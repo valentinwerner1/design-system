@@ -17,9 +17,10 @@ about it (decided 2026-10-14).
 including the app elements decided in the 2026-10-14 review. No app has adopted it yet.
 The fonts are fetched and committed in `fonts/`.
 
-Agents reach this repo through the `design-system` skill in the skillset repo, which
-points at `GUIDELINES.md`, `reference/` and `scripts/sync.sh` by path. Renaming any of
-them breaks the skill; update it in the same change.
+Agents get the system as the `design-system` skill: `scripts/package-skill.sh` builds it
+from `skill/SKILL.md`, `GUIDELINES.md`, `reference/` and the synced bundle. After `ci`
+passes on main, `.github/workflows/package-skill.yml` repackages it into the skillset
+repo and attaches a zip for claude.ai to the run. It needs the `SKILLSET_TOKEN` secret.
 
 ## Constraints
 
@@ -28,12 +29,12 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 
 | # | Constraint | Check |
 |---|---|---|
-| C1 | No em dashes in `css/`, `js/`, `reference/`, `docs/`, `scripts/`, `README.md` or `GUIDELINES.md` | `test_no_em_dashes` |
+| C1 | No em dashes in `css/`, `js/`, `reference/`, `docs/`, `scripts/`, `skill/`, `README.md` or `GUIDELINES.md` | `test_no_em_dashes` |
 | C2 | Greys and links pass WCAG AA (4.5:1) on every surface in both themes; status colours pass 4.5:1 and data colours 3:1 in dark. Light mode keeps the dark colour set as a recorded exception, floor 1.6:1 | `test_colour_pairs_meet_wcag_aa` |
 | C3 | Archivo is declared as a variable weight range, and every font-weight used in `css/` falls inside it | `test_font_weights_render_as_written` |
 | C4 | Every control that sits in a bar (buttons, dropdowns, segments, fields, sort, steppers) takes its height from `--control-h` and nothing gives one a fixed height | `test_controls_in_a_bar_share_one_height` |
 | C5 | No hex colour in `css/` outside `tokens.css` (masks exempt: they only read transparency) | `test_no_raw_hex_outside_tokens` |
-| C6 | No middle dot in `css/`, `js/`, `reference/`, `README.md` or `GUIDELINES.md` | `test_no_middle_dots` |
+| C6 | No middle dot in `css/`, `js/`, `reference/`, `skill/`, `README.md` or `GUIDELINES.md` | `test_no_middle_dots` |
 | C7 | Arrows and ticks (`→ ↗ ← ✓`) only inside a mono element or a CSS rule that sets the mono font | `test_arrows_are_set_in_mono` |
 | C8 | Every element a GFM markdown renderer can emit (tables, task lists, strikethrough, code included) has a style, globally or under `.md` | `test_markdown_output_is_fully_styled` |
 
@@ -63,6 +64,8 @@ reference/index.html     foundations, components and assembled patterns
 reference/elements.html  every app element, with the reason beside it
 docs/archive/        the comparison rounds and the 2026-10-14 review behind the decisions
 scripts/sync.sh      vendor into an app as ds.css + theme.js + components.js + fonts/
+scripts/package-skill.sh  the same bundle plus guidelines and reference pages, as a Claude skill
+skill/SKILL.md       the skill's own text; packaged, never read in place
 scripts/fetch-fonts.sh  download the woff2 files into fonts/
 ```
 
@@ -74,6 +77,7 @@ Any OS with Python 3 and git. Nothing to install for the CSS itself.
 scripts/fetch-fonts.sh                          # once
 python3 -m http.server 8765                     # then open http://localhost:8765/reference/
 scripts/sync.sh ../upgrade-me/upgrade_me/web/static/ds
+scripts/package-skill.sh ../skillset/skills/design-system ../design-system.zip   # CI does this on main
 uvx --from pytest pytest -q tests
 ```
 

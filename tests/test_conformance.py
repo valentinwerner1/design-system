@@ -190,7 +190,7 @@ def test_no_em_dashes():
     paths = [
         ROOT / "README.md",
         ROOT / "GUIDELINES.md",
-        *(ROOT / d for d in ("css", "js", "reference", "docs", "scripts")),
+        *(ROOT / d for d in ("css", "js", "reference", "docs", "scripts", "skill")),
     ]
     for base in paths:
         files = (
@@ -318,7 +318,7 @@ def test_controls_in_a_bar_share_one_height():
 
 
 # Files that ship to apps or show the system: everything a rule about visible output covers.
-SHIPPED = ["css/*.css", "js/*.js", "reference/*.html", "README.md", "GUIDELINES.md"]
+SHIPPED = ["css/*.css", "js/*.js", "reference/*.html", "README.md", "GUIDELINES.md", "skill/*"]
 
 
 def _shipped() -> list[Path]:

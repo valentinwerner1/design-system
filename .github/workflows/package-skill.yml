@@ -1,0 +1,54 @@
+# Repackage the design-system skill and commit it to the skillset repo.
+#
+# Runs after `ci` passes on main, so a system that fails its own tests is never
+# packaged. Packaging is idempotent: a push that changes nothing the skill carries
+# makes no commit in skillset. The zip for claude.ai is attached to the run.
+#
+# Needs the SKILLSET_TOKEN secret: a fine-grained token with Contents read and
+# write on valentinwerner1/skillset, and nothing else.
+
+name: package-skill
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-skill
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: design-system
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/checkout@v5
+        with:
+          repository: valentinwerner1/skillset
+          token: ${{ secrets.SKILLSET_TOKEN }}
+          path: skillset
+      - name: Package
+        run: design-system/scripts/package-skill.sh skillset/skills/design-system "$RUNNER_TEMP/design-system.zip"
+      - name: Commit to skillset
+        working-directory: skillset
+        run: |
+          git add -A skills/design-system
+          if git diff --cached --quiet; then echo "skill unchanged"; exit 0; fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898283+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Repackage the $(cut -d. -f1 skills/design-system/VERSION)"
+          git push
+      - uses: actions/upload-artifact@v4
+        with:
+          name: design-system-skill
+          path: ${{ runner.temp }}/design-system.zip
