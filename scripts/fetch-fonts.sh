@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Download the variable woff2 files (latin subset) into fonts/, once.
+# Download the variable woff2 files into fonts/, once.
 # Both fonts are SIL Open Font License, so self-hosting and committing them is fine.
 # Source is Google's font CDN via its CSS API; the file URLs change between releases,
 # so they're read from the CSS rather than hard-coded.
@@ -20,4 +20,9 @@ fetch() {  # fetch <css2 family query> <output file>
 }
 
 fetch "Archivo:wdth,wght@62..125,100..900" archivo-latin-var.woff2
-fetch "JetBrains+Mono:wght@100..800" jetbrains-mono-latin-var.woff2
+# JetBrains Mono comes from its own repo instead: every Google subset drops the arrows and
+# the tick (U+2190-21FF, U+2713) that .arrow, .go and menu ticks are set in. The full
+# variable file has them. Pinned to the commit that added it, so the bytes never change.
+jbm="https://raw.githubusercontent.com/JetBrains/JetBrainsMono/02bb50b082dad9ef8a0f33ac393839202b760223/fonts/webfonts/JetBrainsMono%5Bwght%5D.woff2"
+curl -fsSL "$jbm" -o "$here/fonts/jetbrains-mono-var.woff2"
+echo "fonts/jetbrains-mono-var.woff2  $(wc -c < "$here/fonts/jetbrains-mono-var.woff2") bytes"

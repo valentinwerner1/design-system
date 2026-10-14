@@ -9,7 +9,7 @@ rationale in `ARCHITECTURE.md`, how to design with it in `GUIDELINES.md`, planne
 `BACKLOG.md`.
 
 **Status:** all design decisions made; tokens, components, patterns and guidelines exist.
-No app has adopted it yet, and the fonts are not fetched yet.
+No app has adopted it yet. The fonts are fetched and committed in `fonts/`.
 
 ## Constraints
 

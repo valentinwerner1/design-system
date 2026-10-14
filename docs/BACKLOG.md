@@ -8,7 +8,6 @@
 
 ## Next
 
-- Fetch fonts (`scripts/fetch-fonts.sh`) and commit them.
 - Adopt in upgrade-me first (names already match), then the homepage.
 - Fix the homepage mock: 8 em dashes, middle dots, the two failing greys
   (`#6f695f`, `#736c62`), and the 760ms reveals down to the settle timings.
