@@ -12,6 +12,11 @@
 - Fix the homepage mock: 8 em dashes, middle dots, the two failing greys
   (`#6f695f`, `#736c62`), and the 760ms reveals down to the settle timings.
 - loquol: move from cool blue-black and azure to the shared base; speakers use `--data-*`.
+- When each app adopts the system: dates and durations to the formats table in
+  `GUIDELINES.md` (loquol's `DD/MM/YY`, upgrade-me's locale dates), placeholders to real
+  examples, middle dots out.
+- hindsight: keeps its own colours (recorded exception), but its streak becomes a record
+  ("best run"), not something you can lose.
 
 ## Later
 

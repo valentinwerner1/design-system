@@ -22,13 +22,27 @@ asking for attention on the screen and decide what wins.
 - Show only what earns its room. A speaker under 1% folds into "+2" when showing them would
   cost space or push other things around.
 - Chips only in small numbers. A list of people, stages or moves is a line, icons or a table.
+- Nothing to lose. No streak that resets: show a run as a record ("best run: 12 days") next
+  to what happened this week. Progress never goes backwards because you took a break.
 
 ## 2. Alignment and consistent formatting
 
 - Siblings line up. Repeated cards put their footers in `.foot` so progress, counts and
   status sit at the same height regardless of how long the description is.
-- The same kind of data looks the same everywhere: durations `32:10`, relative dates
-  `2d ago`, counts `5 of 12`, percentages `42%`, all in `.meta` (mono).
+- The same kind of data looks the same everywhere, always in `.meta` (mono):
+
+  | Kind | Format |
+  |---|---|
+  | Date, last 7 days | relative: `2h ago`, `2d ago` |
+  | Date, this year | `14 Oct` |
+  | Date, before this year | `14 Oct 2025` |
+  | Time of day | 24-hour: `06:58` |
+  | Length of a meeting, lesson, job | minutes: `32 min`, `1 h 10 min`, `<1 min` |
+  | Position in a recording | `32:10`, only on a player or timeline |
+  | Count | `5 of 12` |
+  | Share | `42%` |
+
+  Never the browser's locale format.
 - Everything snaps to the 4px grid (`--space-*`). No one-off margins.
 - Numbers are tabular (set on `body`), so columns of figures line up.
 - Text never wider than `--width-prose` (68ch). Body text is left-aligned, never centred.
@@ -64,6 +78,8 @@ a card's action, "Start tour".
 ## 4. Colour
 
 - Yellow means action, selection, progress or "this one". Never decoration.
+- One palette for every app, content included (boards, charts): no per-app accent colour.
+  Recorded exception: hindsight keeps its own colours as they are.
 - Status colours only for status, data colours only for data the app owns. They share hues
   (info = data 1, good = data 2, warn = data 5), so never put a status and a series of the
   same hue next to each other with different meanings.
@@ -93,7 +109,9 @@ a card's action, "Start tour".
 - Empty states invite: name the space and offer the next step with an arrow link.
 - No "successfully", "please", exclamation marks, or "simply / just / easy".
 - Never ask a question and hide its answer.
-- Placeholders are real examples ("Weekly sync"), not instructions.
+- Placeholders are real examples of valid input ("Weekly sync", "magnuscarlsen"), not
+  instructions. Search fields are the exception: they name what they search ("Find in
+  transcript"), because an example query would read as a typed one.
 
 ## 7. Charts
 

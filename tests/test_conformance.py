@@ -313,6 +313,107 @@ def test_controls_in_a_bar_share_one_height():
     )
 
 
+# Files that ship to apps or show the system: everything a rule about visible output covers.
+SHIPPED = ["css/*.css", "js/*.js", "reference/*.html", "README.md"]
+
+
+def _shipped() -> list[Path]:
+    return [ROOT / f for pat in SHIPPED for f in _tracked(pat)]
+
+
+def test_no_raw_hex_outside_tokens():
+    """C5. Colours come from css/tokens.css; no other stylesheet writes a hex value.
+
+    A hex outside the tokens is a colour that skips the light/dark switch and the contrast
+    test. Masks are exempt: they only read transparency, so their colour is never seen.
+    """
+    bad = []
+    for p in sorted((ROOT / "css").glob("*.css")):
+        if p.name == "tokens.css":
+            continue
+        text = re.sub(r"/\*.*?\*/", "", p.read_text(encoding="utf-8"), flags=re.S)
+        for decl in re.findall(r"([\w-]+)\s*:([^;{}]+)", text):
+            prop, value = decl
+            if "mask" in prop:
+                continue
+            bad += [f"{p.name}: {prop}: {h}" for h in re.findall(r"#[0-9a-fA-F]{3,8}\b", value)]
+    assert not bad, f"raw hex outside css/tokens.css (add a token instead): {bad}"
+
+
+def test_no_middle_dots():
+    """C6. No middle dot (U+00B7) in anything shipped or shown.
+
+    Dropped as a separator in the 2026-10-14 review: metadata items are separated by
+    space between mono items (or commas in running text), never by dots.
+    """
+    hits = []
+    for p in _shipped():
+        for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            if "\u00b7" in line:
+                hits.append(f"{p.relative_to(ROOT)}:{i}")
+    assert not hits, f"middle dots found (use spacing or commas): {hits}"
+
+
+ARROWS = "\u2190\u2192\u2197\u2713"  # the glyphs Archivo lacks; JetBrains Mono has them
+
+
+def _mono_classes() -> set[str]:
+    """Classes whose own rule sets the mono font, read from the CSS rather than listed."""
+    out = set()
+    for p in sorted((ROOT / "css").glob("*.css")):
+        for sels, body in _css_rules(p.read_text(encoding="utf-8")):
+            if re.search(r"font(?:-family)?:[^;]*var\(--mono\)", body):
+                out.update(s[1:] for s in sels if re.fullmatch(r"\.[\w-]+", s))
+    return out
+
+
+def test_arrows_are_set_in_mono():
+    """C7. Arrows and ticks only appear inside something set in JetBrains Mono.
+
+    Archivo has no arrows or tick, so outside a mono element they come from whatever
+    fallback font the OS has, and look different on every machine (hindsight moved to
+    SVG for exactly this). Allowed: elements with a mono class (.arrow, .go, .meta, ...),
+    <code> and <kbd>; in CSS, a content string in a rule that sets the mono font.
+    """
+    from html.parser import HTMLParser
+
+    mono = _mono_classes()
+    assert {"arrow", "go"} <= mono, ".arrow and .go must set font-family: var(--mono)"
+    bad: list[str] = []
+
+    class Walk(HTMLParser):
+        def __init__(self, name: str) -> None:
+            super().__init__()
+            self.name, self.stack = name, []
+
+        def handle_starttag(self, tag, attrs):
+            if tag in {"br", "img", "input", "meta", "link", "hr", "path", "circle", "rect"}:
+                return
+            cls = dict(attrs).get("class") or ""
+            self.stack.append(tag in {"code", "kbd", "pre"} or bool(mono & set(cls.split())))
+
+        def handle_endtag(self, tag):
+            if self.stack and tag not in {"br", "img", "input", "meta", "link", "hr"}:
+                self.stack.pop()
+
+        def handle_data(self, data):
+            if any(c in data for c in ARROWS) and not any(self.stack):
+                line = self.getpos()[0]
+                bad.append(f"{self.name}:{line} {data.strip()[:40]!r}")
+
+    for p in _shipped():
+        if p.suffix == ".html":
+            Walk(str(p.relative_to(ROOT))).feed(p.read_text(encoding="utf-8"))
+    for p in sorted((ROOT / "css").glob("*.css")):
+        for sels, body in _css_rules(p.read_text(encoding="utf-8")):
+            if (
+                re.search(r"content:\s*\"[^\"]*[" + ARROWS + r"]", body)
+                and "var(--mono)" not in body
+            ):
+                bad.append(f"{p.name}: {', '.join(sels)}")
+    assert not bad, f"arrows or ticks outside a mono element (wrap in .arrow): {bad}"
+
+
 # =============================================================================
 # Generic — these apply to every repo. Keep them.
 # =============================================================================

@@ -22,6 +22,9 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 | C2 | Greys and links pass WCAG AA (4.5:1) on every surface in both themes; status colours pass 4.5:1 and data colours 3:1 in dark. Light mode keeps the dark colour set as a recorded exception, floor 1.6:1 | `test_colour_pairs_meet_wcag_aa` |
 | C3 | Archivo is declared as a variable weight range, and every font-weight used in `css/` falls inside it | `test_font_weights_render_as_written` |
 | C4 | Every control that sits in a bar (buttons, dropdowns, segments, fields, sort, steppers) takes its height from `--control-h` and nothing gives one a fixed height | `test_controls_in_a_bar_share_one_height` |
+| C5 | No hex colour in `css/` outside `tokens.css` (masks exempt: they only read transparency) | `test_no_raw_hex_outside_tokens` |
+| C6 | No middle dot in `css/`, `js/`, `reference/` or `README.md` | `test_no_middle_dots` |
+| C7 | Arrows and ticks (`→ ↗ ← ✓`) only inside a mono element or a CSS rule that sets the mono font | `test_arrows_are_set_in_mono` |
 
 ## Canonical files
 

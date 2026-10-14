@@ -29,6 +29,8 @@
     .hit-demo figcaption { font: 11px var(--mono); color: var(--faint); text-align: center; }
     .hit-demo .icon-btn { outline: 1px dashed var(--accent-mark); outline-offset: 0; }
     .hit-demo .phone { width: 44px; height: 44px; }
+    .metaline { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); margin-top: 2px; }
+    .metaline.commas { gap: 0; }
     .mini-board { width: min(220px, 100%); aspect-ratio: 1; border-radius: var(--radius-md); background: repeating-conic-gradient(var(--line-3) 0 25%, var(--surface-2) 0 50%) 0 0 / 25% 25%; }
     @media (max-width: 860px) { .el { grid-template-columns: 1fr; gap: var(--space-4); } }
   </style>
@@ -54,7 +56,7 @@
 
   <!-- 1 -->
   <div class="el">
-    <div><span class="eyebrow">01 / Arrows in mono</span><h3>Arrows that look the same everywhere</h3><p>Archivo has no → ↗ ← ✓, so they come from whatever system font the OS picks. JetBrains Mono has them. hindsight moved to SVG for the same reason.</p><span class="meta src">hindsight trainer_template.html, pieces and icons</span></div>
+    <div><span class="eyebrow">01 / Arrows in mono</span><h3>Arrows that look the same everywhere</h3><p>Archivo has no <code>→ ↗ ← ✓</code>, so they come from whatever system font the OS picks. JetBrains Mono has them. hindsight moved to SVG for the same reason.</p><span class="meta src">hindsight trainer_template.html, pieces and icons</span></div>
     <div class="demo row" style="gap: var(--space-6)"><a href="#">Read case study <span class="arrow">→</span></a><span class="go" style="position:static">↗</span><span class="meta">✓ done</span></div>
   </div>
 
@@ -264,6 +266,27 @@
     </div>
   </div>
 
+  <!-- 13b -->
+  <div class="el">
+    <div><span class="eyebrow">13b / Metadata rows</span><h3>Pick one: what separates the items</h3><p>No middle dots. The same session list both ways, with the date and duration formats decided in the review: relative when recent, "14 Oct" this year, the year only when it's not this one, lengths in minutes.</p><span class="meta src">upgrade-me "Start, 35 min" (written with a middle dot), loquol preview head; review B8, B10</span></div>
+    <div class="demo" style="display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))">
+      <div style="display: grid; gap: var(--space-2)"><span class="meta">B / Space between mono items</span>
+        <div class="rows">
+          <div><span class="grow">Standup 14 Oct<div class="metaline"><span class="meta">2h ago</span><span class="meta">32 min</span><span class="meta">3 speakers</span></div></span></div>
+          <div><span class="grow">Client sync<div class="metaline"><span class="meta">9 Oct</span><span class="meta">58 min</span><span class="meta">5 speakers</span></div></span></div>
+          <div><span class="grow">Q4 planning 2025<div class="metaline"><span class="meta">3 Dec 2025</span><span class="meta">1 h 10 min</span><span class="meta">7 speakers</span></div></span></div>
+        </div>
+      </div>
+      <div style="display: grid; gap: var(--space-2)"><span class="meta">C / Commas</span>
+        <div class="rows">
+          <div><span class="grow">Standup 14 Oct<div class="metaline commas"><span class="meta">2h ago, 32 min, 3 speakers</span></div></span></div>
+          <div><span class="grow">Client sync<div class="metaline commas"><span class="meta">9 Oct, 58 min, 5 speakers</span></div></span></div>
+          <div><span class="grow">Q4 planning 2025<div class="metaline commas"><span class="meta">3 Dec 2025, 1 h 10 min, 7 speakers</span></div></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 14 -->
   <div class="el">
     <div><span class="eyebrow">14 / Principle</span><h3>Honest graphs</h3><p>Don't fake data. A zero day keeps a stub so the chart doesn't look broken, but the stub is grey, never the data colour, so it can't pass for a small value. An axis doesn't start where it flatters; a number you don't have is missing, not estimated.</p><span class="meta src">hindsight progress card; review F2</span></div>
@@ -367,7 +390,7 @@
       </div>
       <div class="settings-group"><span class="eyebrow">You</span>
         <div class="settings">
-          <div><div><strong>Lichess username</strong><span>Whose games to fetch. Public games only.</span></div><input class="input" aria-label="Lichess username" placeholder="whose games to analyse"></div>
+          <div><div><strong>Lichess username</strong><span>Whose games to fetch. Public games only.</span></div><input class="input" aria-label="Lichess username" placeholder="magnuscarlsen"></div>
           <div><div><strong>Sounds</strong><span>A click on each move, a tone on a mistake.</span></div><input class="switch" type="checkbox" role="switch" aria-label="Sounds" checked></div>
           <div><div><strong>Theme</strong><span>Follows your system until you pick one.</span></div><div class="seg" role="group" aria-label="Theme"><button aria-pressed="true">System</button><button aria-pressed="false">Dark</button><button aria-pressed="false">Light</button></div></div>
           <div><div><strong>Show the tour again</strong><span>It runs once on its own; this brings it back.</span></div><button class="btn ghost sm">Start tour</button></div>
