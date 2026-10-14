@@ -30,6 +30,27 @@ code, kbd, samp, pre { font-family: var(--mono); font-size: .88em; }
 :not(pre) > code { background: var(--surface-2); padding: 1px 5px; border-radius: var(--radius-sm); }
 pre { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: var(--space-4); overflow-x: auto; }
 
+kbd {
+  display: inline-block; min-width: 20px; padding: 1px 5px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line-2); border-bottom-width: 2px; background: var(--surface);
+  font: var(--weight-medium) 11px / 1.4 var(--mono); color: var(--muted); text-align: center;
+}
+/* A search hit. The only highlight block in content. */
+mark { background: var(--accent-soft); color: inherit; border-radius: 2px; padding: 0 1px; }
+
+/* Number fields have no native spinner: it is squished inside the box and nobody uses it.
+   Where nudging a value is the point, .stepper-input puts - and + outside the field. */
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---- scrollbars: calm, never the lightest thing on screen ------------- */
+* { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background-color: var(--line-3); }
+::-webkit-scrollbar-button { display: none; }
+
 /* ---- links ----------------------------------------------------------- */
 a { color: var(--accent-ink); text-decoration: none; transition: color var(--dur-fast) var(--ease); }
 a:hover { color: var(--text); }

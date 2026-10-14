@@ -4,7 +4,7 @@
 #   scripts/sync.sh <dest-dir>      e.g. scripts/sync.sh ../upgrade-me/upgrade_me/web/static/ds
 #
 # Writes <dest>/ds.css (fonts + tokens + base + components, in that order),
-# <dest>/theme.js and <dest>/fonts/. The header in ds.css names the commit it came
+# <dest>/theme.js, <dest>/components.js and <dest>/fonts/. The header in ds.css names the commit it came
 # from, so an app always knows which version it runs. Apps never edit these files;
 # app-specific CSS goes in the app's own stylesheet, loaded after ds.css.
 set -euo pipefail
@@ -28,6 +28,7 @@ mkdir -p "$dest/fonts"
 } > "$dest/ds.css"
 
 cp "$here/js/theme.js" "$dest/theme.js"
+cp "$here/js/components.js" "$dest/components.js"
 if compgen -G "$here/fonts/*.woff2" > /dev/null; then
   cp "$here"/fonts/*.woff2 "$dest/fonts/"
 else

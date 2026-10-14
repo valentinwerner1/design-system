@@ -1,5 +1,9 @@
 # What makes an app yours: inferred guidelines
 
+**Archived 2026-10-14; the review is done.** The proposed files became `css/components.css`
+(plus `css/base.css` and `--control-h` in `css/tokens.css`), `js/components.js` and
+`reference/elements.html`; the rules went into `docs/GUIDELINES.md`. Original text follows.
+
 **For review, 2026-10-14. Not committed.** Inferred from the code, CSS comments, docs and
 commit history of upgrade-me, loquol and hindsight, plus the homepage mock, cache-tax and
 claude-skins. Every rule cites where it came from. Generic best practice is left out

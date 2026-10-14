@@ -253,6 +253,66 @@ def test_font_weights_render_as_written():
     assert not bad, f"weights outside Archivo's loaded range {rng}: {bad}"
 
 
+# Controls that sit in a bar together. Each must take its height from --control-h, and no
+# rule may give one a fixed height instead.
+BAR_CONTROLS = [
+    ".btn",
+    ".input",
+    ".picker",
+    ".seg",
+    ".find",
+    ".sort .dir",
+    ".filterbar .clear",
+    ".stepper-input > button",
+    ".settings .input",
+]
+
+
+def _css_rules(text: str) -> list[tuple[list[str], str]]:
+    """(selectors, body) for every plain rule, including those nested in @media."""
+    text = re.sub(r"/\*.*?\*/", "", text, flags=re.S)
+    rules = []
+    for sel, body in re.findall(r"([^{}]+)\{([^{}]*)\}", text):
+        sel = sel.strip()
+        if sel.startswith("@"):
+            continue
+        rules.append(([" ".join(x.split()) for x in sel.split(",")], body))
+    return rules
+
+
+def test_controls_in_a_bar_share_one_height():
+    """C4. Every control that sits in a bar is exactly --control-h tall.
+
+    A segmented control standing taller than the dropdown beside it was the defect that
+    started this rule (review 2026-10-14, F1). One token means the bar stays one height on
+    desktop (40px) and grows together on a phone (44px).
+    """
+    tokens = (ROOT / "css" / "tokens.css").read_text(encoding="utf-8")
+    assert re.search(r"--control-h:\s*\d+px", tokens), (
+        "css/tokens.css must define --control-h; every bar control takes its height from it."
+    )
+    rules = _css_rules((ROOT / "css" / "components.css").read_text(encoding="utf-8"))
+    missing, fixed = [], []
+    for control in BAR_CONTROLS:
+        heights = [
+            m.group(1).strip()
+            for sels, body in rules
+            if control in sels
+            for m in re.finditer(r"(?<![\w-])(?:min-)?height:\s*([^;]+);", body)
+        ]
+        if "var(--control-h)" not in heights:
+            missing.append(control)
+        fixed += [f"{control}: {h}" for h in heights if h != "var(--control-h)"]
+    assert not missing, (
+        f"these bar controls don't take their height from --control-h: {missing}. "
+        "Set height (or min-height for .btn) to var(--control-h)."
+    )
+    assert not fixed, (
+        f"these rules give a bar control its own height: {fixed}. A bar stays one height "
+        "only if every control uses --control-h."
+    )
+
+
 # =============================================================================
 # Generic — these apply to every repo. Keep them.
 # =============================================================================

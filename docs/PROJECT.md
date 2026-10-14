@@ -21,6 +21,7 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 | C1 | No em dashes in `css/`, `js/`, `reference/`, `docs/`, `scripts/` or `README.md` | `test_no_em_dashes` |
 | C2 | Greys and links pass WCAG AA (4.5:1) on every surface in both themes; status colours pass 4.5:1 and data colours 3:1 in dark. Light mode keeps the dark colour set as a recorded exception, floor 1.6:1 | `test_colour_pairs_meet_wcag_aa` |
 | C3 | Archivo is declared as a variable weight range, and every font-weight used in `css/` falls inside it | `test_font_weights_render_as_written` |
+| C4 | Every control that sits in a bar (buttons, dropdowns, segments, fields, sort, steppers) takes its height from `--control-h` and nothing gives one a fixed height | `test_controls_in_a_bar_share_one_height` |
 
 ## Canonical files
 
@@ -30,6 +31,7 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 | A component with all its states | `.btn` in `css/components.css` |
 | Theme switching without a flash | `js/theme.js` |
 | How everything looks together | `reference/index.html` |
+| Every app element and why it looks that way | `reference/elements.html` |
 | What goes on a screen, and the no-gos | `docs/GUIDELINES.md` |
 
 ## Layout
@@ -38,11 +40,15 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 css/fonts.css        @font-face for the self-hosted variable fonts
 css/tokens.css       every value, dark default + light overrides
 css/base.css         element defaults: type, links, selection, focus, reduced motion
-css/components.css   buttons, nav, tabs, cards, rows, status, notices, forms, progress, charts
+css/components.css   buttons, nav, cards, rows, status, forms, charts, then the app elements:
+                     app bar, menu, filter and sort bars, dialog, toast, table, settings,
+                     tooltips, tour, state page, front door
 js/theme.js          saved theme before first paint, toggleTheme(), [data-reveal]
-reference/           foundations, components and assembled patterns
-docs/archive/        the comparison rounds behind the decisions
-scripts/sync.sh      vendor into an app as ds.css + theme.js + fonts/
+js/components.js     toast(), menu keys and pickers, toggles, table sort and filters, steppers
+reference/index.html     foundations, components and assembled patterns
+reference/elements.html  every app element, with the reason beside it
+docs/archive/        the comparison rounds and the 2026-10-14 review behind the decisions
+scripts/sync.sh      vendor into an app as ds.css + theme.js + components.js + fonts/
 scripts/fetch-fonts.sh  download the woff2 files into fonts/
 ```
 

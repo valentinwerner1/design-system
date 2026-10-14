@@ -53,6 +53,11 @@
   --width-app: 1200px;
   --width-site: 1560px;
 
+  /* Height of every control that sits in a bar: dropdowns, segments, fields, toggles, sort,
+     and the buttons beside them. One value, so a bar never has a control standing taller
+     than its neighbour. The same as .btn: generous, not squished. 44px on a phone. */
+  --control-h: 40px;
+
   /* ---- shape --------------------------------------------------------- */
   --radius-sm: 4px;   /* fields, chips, small controls */
   --radius-md: 6px;   /* menus, tooltips, inner blocks */

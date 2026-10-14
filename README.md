@@ -13,6 +13,7 @@ scripts/sync.sh path/to/app/static/ds
 <script src="ds/theme.js"></script>          <!-- in <head>, no defer -->
 <link rel="stylesheet" href="ds/ds.css">
 <link rel="stylesheet" href="app.css">       <!-- app-specific styles, after -->
+<script src="ds/components.js"></script>     <!-- end of <body>: toasts, menus, tables -->
 ```
 
 Then `toggleTheme()` switches light and dark, and `data-reveal` on an element gives it
@@ -24,6 +25,7 @@ the entrance motion.
 python3 -m http.server 8765
 ```
 
-Open http://localhost:8765/reference/.
+Open http://localhost:8765/reference/ for the foundations and patterns, and
+http://localhost:8765/reference/elements.html for every component with its reasoning.
 
 Decisions and why: `docs/ARCHITECTURE.md`. Rules the tests enforce: `docs/PROJECT.md`.

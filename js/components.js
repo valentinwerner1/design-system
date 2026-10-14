@@ -1,6 +1,6 @@
-// proposed.js: behaviour for the proposed elements in css/proposed.css. FOR REVIEW.
-// Load at the end of <body>. Everything else in the proposal is CSS plus native
-// <dialog> and the popover attribute.
+// components.js: behaviour for the components that need it (toast, menu keys and
+// pickers, toggles, table sort and filters, number steppers). Load at the end of <body>.
+// Everything else is CSS plus native <dialog> and the popover attribute.
 (function () {
   // Toasts are for results of background work and for Undo. Timings from loquol:
   // an action must still be there when you look up from the call, errors linger.
