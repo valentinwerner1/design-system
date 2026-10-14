@@ -51,3 +51,13 @@ Things that cost real debugging time. Symptom, root cause, guard.
 - **Symptom:** table cells with class `num` render in the accent colour.
 - **Root cause:** `.num` is the yellow mono numbering style in `css/components.css`.
 - **Guard:** numeric table cells use `.numeric`.
+
+## CI fails on lint after the local hook passed
+
+- **Symptom:** `ruff format --check` fails in CI on `GUIDELINES.md`; locally every hook
+  passed.
+- **Root cause:** ruff 0.16 also formats Python code blocks inside Markdown. CI pins
+  0.16.0 and checks the whole tree; the pre-commit hook pins v0.14.5, which only formats
+  `.py` files. Both come from the repo-governance template.
+- **Guard:** after editing a Python snippet in any Markdown file, run
+  `uvx ruff@0.16.0 format --check` before pushing, until the template pins one version.

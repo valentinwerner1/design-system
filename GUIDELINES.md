@@ -121,10 +121,14 @@ a card's action, "Start tour".
   arrived as pipes. In Python:
 
   ```python
-  from markdown_it import MarkdownIt                       # markdown-it-py
-  from mdit_py_plugins.tasklists import tasklists_plugin   # mdit-py-plugins
+  from markdown_it import MarkdownIt  # markdown-it-py
+  from mdit_py_plugins.tasklists import tasklists_plugin  # mdit-py-plugins
 
-  md = MarkdownIt("commonmark", {"html": False}).enable(["table", "strikethrough"]).use(tasklists_plugin)
+  md = (
+      MarkdownIt("commonmark", {"html": False})
+      .enable(["table", "strikethrough"])
+      .use(tasklists_plugin)
+  )
   ```
 
 ## 7. Charts
