@@ -17,6 +17,10 @@ about it (decided 2026-10-14).
 including the app elements decided in the 2026-10-14 review. No app has adopted it yet.
 The fonts are fetched and committed in `fonts/`.
 
+Agents reach this repo through the `design-system` skill in the skillset repo, which
+points at `GUIDELINES.md`, `reference/` and `scripts/sync.sh` by path. Renaming any of
+them breaks the skill; update it in the same change.
+
 ## Constraints
 
 Each is backed by a conformance test in `tests/test_conformance.py` or tagged
