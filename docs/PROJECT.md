@@ -6,14 +6,16 @@ and a reference page. No build step; apps vendor a copy with `scripts/sync.sh`.
 
 Behavioral rules: `CLAUDE.md` (repo root). How to design with the system:
 `GUIDELINES.md` (repo root). Beside this file in `docs/`: design and rationale in
-`ARCHITECTURE.md`, planned work in `BACKLOG.md`.
+`ARCHITECTURE.md`, planned work in `BACKLOG.md`, traps that cost debugging time in
+`GOTCHAS.md`.
 
 **Recorded exception to `CLAUDE.md` § "all repo docs live in `docs/`":** `GUIDELINES.md`
 sits at the root because it is a deliverable of this repo, like `css/`, not a document
 about it (decided 2026-10-14).
 
-**Status:** all design decisions made; tokens, components, patterns and guidelines exist.
-No app has adopted it yet. The fonts are fetched and committed in `fonts/`.
+**Status:** all design decisions made; tokens, components, patterns and guidelines exist,
+including the app elements decided in the 2026-10-14 review. No app has adopted it yet.
+The fonts are fetched and committed in `fonts/`.
 
 ## Constraints
 
