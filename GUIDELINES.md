@@ -114,6 +114,18 @@ a card's action, "Start tour".
 - Placeholders are real examples of valid input ("Weekly sync", "magnuscarlsen"), not
   instructions. Search fields are the exception: they name what they search ("Find in
   transcript"), because an example query would read as a typed one.
+- Text written by an AI or a person (summaries, notes, module content) is markdown, and it
+  is always rendered, never shown raw. Render GitHub-flavoured: tables, task lists,
+  strikethrough and fenced code on, raw HTML off. Put the result in `.md`, which styles
+  everything the renderer can emit. CommonMark alone has no tables; that is why they
+  arrived as pipes. In Python:
+
+  ```python
+  from markdown_it import MarkdownIt                       # markdown-it-py
+  from mdit_py_plugins.tasklists import tasklists_plugin   # mdit-py-plugins
+
+  md = MarkdownIt("commonmark", {"html": False}).enable(["table", "strikethrough"]).use(tasklists_plugin)
+  ```
 
 ## 7. Charts
 
@@ -165,8 +177,8 @@ Each of these is built in `reference/elements.html`, with its reason beside it.
 - No generic screens. An error says what happened and what happens next; a failure keeps
   the screen and says why. A generic or unexpected screen reads as something forgotten.
 - Most apps don't lock anyone out: open, or a demo. A login is only for apps that can put
-  real GPU or CPU load on the homelab. It is two columns, the form on the right
-  (`.door-split`).
+  real GPU or CPU load on the homelab OR something that needs to be protected.
+  It is two columns, the form on the right (`.door-split`).
 
 ## 10. No-gos
 
@@ -208,4 +220,5 @@ The tells of generic, AI-made UI. If a design has one of these, it needs a reaso
 - [ ] 320px wide: nothing scrolls sideways, touch targets 44px.
 - [ ] Every bar of controls is one height.
 - [ ] Empty, loading, error and offline states exist and follow sections 6 and 9.
+- [ ] Every text written by an AI or a person renders as markdown in `.md`, tables included.
 - [ ] `uvx --from pytest pytest -q tests` passes in this repo after any token change.

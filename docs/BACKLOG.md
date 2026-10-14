@@ -15,6 +15,10 @@
 - When each app adopts the system: dates and durations to the formats table in
   `GUIDELINES.md` (loquol's `DD/MM/YY`, upgrade-me's locale dates), placeholders to real
   examples, middle dots out.
+- Markdown (GUIDELINES.md section 6): upgrade-me renders with plain CommonMark, so module
+  tables arrive as pipes; enable table, strikethrough and task lists. loquol renders the AI
+  summary with its notes-editor converter (bullets and bold only); give read-only AI text a
+  full GFM render into `.md`.
 - hindsight: keeps its own colours (recorded exception), but its streak becomes a record
   ("best run"), not something you can lose.
 

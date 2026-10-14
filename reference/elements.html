@@ -49,7 +49,7 @@
   <div class="intro">
     <span class="eyebrow">Components, with their reasons</span>
     <h1 style="margin: var(--space-2) 0">Elements your apps already need</h1>
-    <p class="lede">Each one exists in some form in upgrade-me, loquol or hindsight, usually built three different ways. This is the one way, on the system's tokens. The left column says why it looks like this; the rules are in <code>docs/GUIDELINES.md</code>, the review that decided them in <code>docs/archive/2026-10-14-inferred-guidelines.md</code>.</p>
+    <p class="lede">Each one exists in some form in upgrade-me, loquol or hindsight, usually built three different ways. This is the one way, on the system's tokens. The left column says why it looks like this; the rules are in <code>GUIDELINES.md</code>, the review that decided them in <code>docs/archive/2026-10-14-inferred-guidelines.md</code>.</p>
   </div>
 
   <!-- 1 -->
@@ -273,6 +273,82 @@
         <div><span class="grow">Client sync<div class="meta">9 Oct, 58 min, 5 speakers</div></span></div>
         <div><span class="grow">Q4 planning 2025<div class="meta">3 Dec 2025, 1 h 10 min, 7 speakers</div></span></div>
       </div>
+    </div>
+  </div>
+
+  <!-- 13c -->
+  <div class="el">
+    <div><span class="eyebrow">13c / Written text</span><h3>AI and people write markdown; it is always rendered</h3><p>An AI summary, a module, someone's notes: rendered from markdown with tables, task lists, strikethrough and code switched on, raw HTML off, inside <code>.md</code>. Never shown raw. CommonMark alone has no tables, which is why they used to arrive as pipes. This demo is real renderer output.</p><span class="meta src">loquol AI summary, upgrade-me modules (markdown-it "commonmark", no tables)</span></div>
+    <div class="demo" style="display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); align-items: start">
+      <div class="panel md" style="padding: var(--space-5)">
+<h2>Decisions</h2>
+<ul>
+<li>Budget for Q1 stays as it is.</li>
+<li>Two blockers on the export, both with owners:
+<ul>
+<li>CSV escaping, <strong>Jana</strong></li>
+<li>PDF fonts, <em>Markus</em></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Owner</th>
+<th>Task</th>
+<th>Due</th>
+<th style="text-align:right">Hours</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jana</td>
+<td>Revised estimate</td>
+<td>17 Oct</td>
+<td style="text-align:right">6</td>
+</tr>
+<tr>
+<td>Markus</td>
+<td>Export fixes</td>
+<td>21 Oct</td>
+<td style="text-align:right">12</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>Send the estimate</li>
+<li><s>Book the room</s> Not needed, call instead</li>
+</ol>
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> HQ transcript</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Name Speaker 3</li>
+</ul>
+<blockquote>
+<p>Pricing waits until the estimate is in.</p>
+</blockquote>
+<p>Run <code>export --csv</code> again after the fix.</p>
+      </div>
+      <details><summary class="meta" style="cursor: pointer">The markdown it came from</summary><pre style="margin-top: var(--space-2)">## Decisions
+
+- Budget for Q1 stays as it is.
+- Two blockers on the export, both with owners:
+  - CSV escaping, **Jana**
+  - PDF fonts, *Markus*
+
+| Owner | Task | Due | Hours |
+|---|---|---|--:|
+| Jana | Revised estimate | 17 Oct | 6 |
+| Markus | Export fixes | 21 Oct | 12 |
+
+1. Send the estimate
+2. ~~Book the room~~ Not needed, call instead
+
+- [x] HQ transcript
+- [ ] Name Speaker 3
+
+&gt; Pricing waits until the estimate is in.
+
+Run `export --csv` again after the fix.</pre></details>
     </div>
   </div>
 

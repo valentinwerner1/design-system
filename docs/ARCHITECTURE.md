@@ -3,7 +3,7 @@
 Design and rationale, agreed over the design sessions on 2026-10-13. Built from the
 valentinwerner.com homepage mock and the upgrade-me redesign (`cffafb7` there), after a
 pass over loquol, hindsight and cache-tax, then refined in eight rounds of side-by-side
-comparisons (`docs/archive/explore-rounds.html`). How to use it: `GUIDELINES.md`. What
+comparisons (`docs/archive/explore-rounds.html`). How to use it: `GUIDELINES.md` at the repo root. What
 the tests enforce: `PROJECT.md`.
 
 ## Principles

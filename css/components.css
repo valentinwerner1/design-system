@@ -1,6 +1,6 @@
 /* components.css: the shared pieces. Class names match upgrade-me where it had one.
    Rules marked "option" are signatures to reach for deliberately, not by default.
-   How to use them well: docs/GUIDELINES.md. */
+   How to use them well: GUIDELINES.md. */
 
 /* ---- layout ------------------------------------------------------------ */
 .container { max-width: var(--width-app); margin: 0 auto; padding: 0 var(--gutter); }
@@ -472,8 +472,10 @@ a:hover .go { border-color: var(--accent-mark); color: var(--accent-mark); }
 
 /* ---- table: numbered columns for long sequences, not chip soup -------------- */
 .table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
-.table th { text-align: left; font-family: var(--mono); font-size: 11px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-status); text-transform: uppercase; color: var(--faint); padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--line); }
-.table td { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--line); }
+.table th, .md th { text-align: left; font-family: var(--mono); font-size: 11px; font-weight: var(--weight-medium); letter-spacing: var(--tracking-status); text-transform: uppercase; color: var(--faint); padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--line); }
+.table td, .md td { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--line); }
+.table tr:last-child td, .md tr:last-child td { border-bottom: 0; }
+.table tbody tr:hover td { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
 .table td.n, .table th.n { width: 1%; white-space: nowrap; font-family: var(--mono); color: var(--faint); }
 .table td.numeric { text-align: right; font-family: var(--mono); }
 /* Widths: a column that doesn't need room doesn't get it (.fit shrinks to its content and
@@ -610,3 +612,28 @@ a:hover .go { border-color: var(--accent-mark); color: var(--accent-mark); }
   :root { --control-h: 44px; }   /* .btn and every bar control follow through --control-h */
   .icon-btn, .icon-nav a { min-height: 44px; min-width: 44px; }
 }
+
+/* ---- md: text written by AI or people, rendered from markdown -------------------- */
+/* Wrap rendered markdown in .md. Every element a GFM renderer emits (tables, task lists,
+   strikethrough, fenced code) has a style here, so an agent's table never arrives as
+   pipes or as bare cells. Headings step down: a summary's "# Title" is a section inside
+   the page, not the page title. Tables share the .table look. */
+.md { max-width: var(--width-prose); line-height: var(--leading-body); overflow-wrap: anywhere; }
+.md > :first-child { margin-top: 0; }
+.md > :last-child { margin-bottom: 0; }
+.md h1, .md h2 { font-size: var(--text-lg); margin: 1.4em 0 .5em; }
+.md h3, .md h4, .md h5, .md h6 { font-size: var(--text-md); margin: 1.2em 0 .4em; }
+.md p, .md ul, .md ol, .md pre, .md blockquote, .md table { margin: 0 0 1em; }
+.md ul, .md ol { padding-left: 1.4em; }
+.md li + li { margin-top: .25em; }
+.md li > ul, .md li > ol { margin: .25em 0 0; }
+.md li::marker { color: var(--faint); }
+.md a { text-decoration: underline; text-decoration-color: var(--link-underline); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.md s, .md del { color: var(--faint); }
+.md img { max-width: 100%; height: auto; border-radius: var(--radius-md); }
+.md blockquote { margin-left: 0; padding-left: var(--space-4); border-left: 2px solid var(--line-2); border-radius: 0; color: var(--muted); }
+/* A wide table scrolls inside the text instead of pushing the page sideways. */
+.md table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: var(--text-sm); overflow-wrap: normal; }
+/* Task lists: the box is the bullet. */
+.md .contains-task-list, .md ul:has(> li > input[type="checkbox"]) { list-style: none; padding-left: 0; }
+.md li > input[type="checkbox"] { margin: 0 var(--space-2) 0 0; width: 14px; height: 14px; vertical-align: -2px; accent-color: var(--accent); }

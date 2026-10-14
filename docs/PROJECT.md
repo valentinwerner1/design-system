@@ -4,9 +4,13 @@ Shared visual language for Valentin's sites and apps (valentinwerner.com, upgrad
 loquol, hindsight): tokens, base styles and components as plain CSS, plus a theme script
 and a reference page. No build step; apps vendor a copy with `scripts/sync.sh`.
 
-Behavioral rules: `CLAUDE.md` (repo root). Beside this file in `docs/`: design and
-rationale in `ARCHITECTURE.md`, how to design with it in `GUIDELINES.md`, planned work in
-`BACKLOG.md`.
+Behavioral rules: `CLAUDE.md` (repo root). How to design with the system:
+`GUIDELINES.md` (repo root). Beside this file in `docs/`: design and rationale in
+`ARCHITECTURE.md`, planned work in `BACKLOG.md`.
+
+**Recorded exception to `CLAUDE.md` § "all repo docs live in `docs/`":** `GUIDELINES.md`
+sits at the root because it is a deliverable of this repo, like `css/`, not a document
+about it (decided 2026-10-14).
 
 **Status:** all design decisions made; tokens, components, patterns and guidelines exist.
 No app has adopted it yet. The fonts are fetched and committed in `fonts/`.
@@ -18,13 +22,14 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 
 | # | Constraint | Check |
 |---|---|---|
-| C1 | No em dashes in `css/`, `js/`, `reference/`, `docs/`, `scripts/` or `README.md` | `test_no_em_dashes` |
+| C1 | No em dashes in `css/`, `js/`, `reference/`, `docs/`, `scripts/`, `README.md` or `GUIDELINES.md` | `test_no_em_dashes` |
 | C2 | Greys and links pass WCAG AA (4.5:1) on every surface in both themes; status colours pass 4.5:1 and data colours 3:1 in dark. Light mode keeps the dark colour set as a recorded exception, floor 1.6:1 | `test_colour_pairs_meet_wcag_aa` |
 | C3 | Archivo is declared as a variable weight range, and every font-weight used in `css/` falls inside it | `test_font_weights_render_as_written` |
 | C4 | Every control that sits in a bar (buttons, dropdowns, segments, fields, sort, steppers) takes its height from `--control-h` and nothing gives one a fixed height | `test_controls_in_a_bar_share_one_height` |
 | C5 | No hex colour in `css/` outside `tokens.css` (masks exempt: they only read transparency) | `test_no_raw_hex_outside_tokens` |
-| C6 | No middle dot in `css/`, `js/`, `reference/` or `README.md` | `test_no_middle_dots` |
+| C6 | No middle dot in `css/`, `js/`, `reference/`, `README.md` or `GUIDELINES.md` | `test_no_middle_dots` |
 | C7 | Arrows and ticks (`→ ↗ ← ✓`) only inside a mono element or a CSS rule that sets the mono font | `test_arrows_are_set_in_mono` |
+| C8 | Every element a GFM markdown renderer can emit (tables, task lists, strikethrough, code included) has a style, globally or under `.md` | `test_markdown_output_is_fully_styled` |
 
 ## Canonical files
 
@@ -35,7 +40,7 @@ Each is backed by a conformance test in `tests/test_conformance.py` or tagged
 | Theme switching without a flash | `js/theme.js` |
 | How everything looks together | `reference/index.html` |
 | Every app element and why it looks that way | `reference/elements.html` |
-| What goes on a screen, and the no-gos | `docs/GUIDELINES.md` |
+| What goes on a screen, and the no-gos | `GUIDELINES.md` |
 
 ## Layout
 

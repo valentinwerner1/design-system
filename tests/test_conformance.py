@@ -187,7 +187,11 @@ def test_no_em_dashes():
     shared template and tests/ is tooling, so both are out of scope.
     """
     offenders = []
-    paths = [ROOT / "README.md", *(ROOT / d for d in ("css", "js", "reference", "docs", "scripts"))]
+    paths = [
+        ROOT / "README.md",
+        ROOT / "GUIDELINES.md",
+        *(ROOT / d for d in ("css", "js", "reference", "docs", "scripts")),
+    ]
     for base in paths:
         files = (
             [base]
@@ -314,7 +318,7 @@ def test_controls_in_a_bar_share_one_height():
 
 
 # Files that ship to apps or show the system: everything a rule about visible output covers.
-SHIPPED = ["css/*.css", "js/*.js", "reference/*.html", "README.md"]
+SHIPPED = ["css/*.css", "js/*.js", "reference/*.html", "README.md", "GUIDELINES.md"]
 
 
 def _shipped() -> list[Path]:
@@ -412,6 +416,44 @@ def test_arrows_are_set_in_mono():
             ):
                 bad.append(f"{p.name}: {', '.join(sels)}")
     assert not bad, f"arrows or ticks outside a mono element (wrap in .arrow): {bad}"
+
+
+# Every element a GFM renderer (markdown-it with table, strikethrough and task lists) can emit.
+GFM_ELEMENTS = [
+    "h1", "h2", "h3", "h4", "p", "ul", "ol", "li", "a", "s", "blockquote",
+    "pre", "code", "hr", "img", "table", "th", "td", 'input[type="checkbox"]',
+]  # fmt: skip
+
+
+def test_markdown_output_is_fully_styled():
+    """C8. Everything rendered markdown can contain has a style, globally or under .md.
+
+    Text written by an AI or a person is rendered from markdown into .md. The classic
+    failure was tables: arriving as bare cells (or as pipes, when the renderer had no
+    table support). A tag without a rule here is one an agent will eventually emit.
+    """
+    sels = [
+        sel
+        for name in ("base.css", "components.css")
+        for sels, _ in _css_rules((ROOT / "css" / name).read_text(encoding="utf-8"))
+        for sel in sels
+    ]
+
+    def covered(tag: str) -> bool:
+        for sel in sels:
+            last = re.split(r"\s*[\s>+~]\s*", sel)[-1]
+            if not re.match(re.escape(tag) + r"(?![\w-])", last):
+                continue
+            first = sel.split()[0]
+            if sel.startswith(".md ") or "." not in first:
+                return True
+        return False
+
+    missing = [t for t in GFM_ELEMENTS if not covered(t)]
+    assert not missing, (
+        f"rendered markdown can contain {missing} but nothing styles them; "
+        "add a rule under .md in css/components.css."
+    )
 
 
 # =============================================================================

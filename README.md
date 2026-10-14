@@ -3,6 +3,9 @@
 Warm near-black, one yellow, quiet by default. The shared look for valentinwerner.com
 and the apps around it, as plain CSS with no build step.
 
+**How to design with it: [`GUIDELINES.md`](GUIDELINES.md).** The CSS makes a screen look
+right; the guidelines decide what goes on it. Read them before building UI, human or agent.
+
 ## Use it in an app
 
 ```
