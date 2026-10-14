@@ -29,8 +29,6 @@
     .hit-demo figcaption { font: 11px var(--mono); color: var(--faint); text-align: center; }
     .hit-demo .icon-btn { outline: 1px dashed var(--accent-mark); outline-offset: 0; }
     .hit-demo .phone { width: 44px; height: 44px; }
-    .metaline { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); margin-top: 2px; }
-    .metaline.commas { gap: 0; }
     .mini-board { width: min(220px, 100%); aspect-ratio: 1; border-radius: var(--radius-md); background: repeating-conic-gradient(var(--line-3) 0 25%, var(--surface-2) 0 50%) 0 0 / 25% 25%; }
     @media (max-width: 860px) { .el { grid-template-columns: 1fr; gap: var(--space-4); } }
   </style>
@@ -268,21 +266,12 @@
 
   <!-- 13b -->
   <div class="el">
-    <div><span class="eyebrow">13b / Metadata rows</span><h3>Pick one: what separates the items</h3><p>No middle dots. The same session list both ways, with the date and duration formats decided in the review: relative when recent, "14 Oct" this year, the year only when it's not this one, lengths in minutes.</p><span class="meta src">upgrade-me "Start, 35 min" (written with a middle dot), loquol preview head; review B8, B10</span></div>
-    <div class="demo" style="display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))">
-      <div style="display: grid; gap: var(--space-2)"><span class="meta">B / Space between mono items</span>
-        <div class="rows">
-          <div><span class="grow">Standup 14 Oct<div class="metaline"><span class="meta">2h ago</span><span class="meta">32 min</span><span class="meta">3 speakers</span></div></span></div>
-          <div><span class="grow">Client sync<div class="metaline"><span class="meta">9 Oct</span><span class="meta">58 min</span><span class="meta">5 speakers</span></div></span></div>
-          <div><span class="grow">Q4 planning 2025<div class="metaline"><span class="meta">3 Dec 2025</span><span class="meta">1 h 10 min</span><span class="meta">7 speakers</span></div></span></div>
-        </div>
-      </div>
-      <div style="display: grid; gap: var(--space-2)"><span class="meta">C / Commas</span>
-        <div class="rows">
-          <div><span class="grow">Standup 14 Oct<div class="metaline commas"><span class="meta">2h ago, 32 min, 3 speakers</span></div></span></div>
-          <div><span class="grow">Client sync<div class="metaline commas"><span class="meta">9 Oct, 58 min, 5 speakers</span></div></span></div>
-          <div><span class="grow">Q4 planning 2025<div class="metaline commas"><span class="meta">3 Dec 2025, 1 h 10 min, 7 speakers</span></div></span></div>
-        </div>
+    <div><span class="eyebrow">13b / Metadata rows</span><h3>Commas between the items</h3><p>One mono line, items separated by commas, in the formats from the guidelines: relative when recent, "14 Oct" this year, the year only when it's not this one, lengths in minutes. No middle dots.</p><span class="meta src">upgrade-me "Start, 35 min" (written with a middle dot), loquol preview head; review B8, B10</span></div>
+    <div class="demo" style="max-width: 420px">
+      <div class="rows">
+        <div><span class="grow">Standup 14 Oct<div class="meta">2h ago, 32 min, 3 speakers</div></span></div>
+        <div><span class="grow">Client sync<div class="meta">9 Oct, 58 min, 5 speakers</div></span></div>
+        <div><span class="grow">Q4 planning 2025<div class="meta">3 Dec 2025, 1 h 10 min, 7 speakers</div></span></div>
       </div>
     </div>
   </div>

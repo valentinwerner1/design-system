@@ -344,7 +344,7 @@ def test_no_middle_dots():
     """C6. No middle dot (U+00B7) in anything shipped or shown.
 
     Dropped as a separator in the 2026-10-14 review: metadata items are separated by
-    space between mono items (or commas in running text), never by dots.
+    commas ("9 Oct, 58 min, 5 speakers"), never by dots.
     """
     hits = []
     for p in _shipped():

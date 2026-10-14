@@ -536,8 +536,7 @@ and two assembled bars (every control `--control-h`: 32px, 44px under 760px), 08
 - **⚑B9 placeholders: A**, real examples of valid input. Search fields name what they search.
 - **⚑B10 formats: B**, relative when recent, `14 Oct` this year, `14 Oct 2025` before,
   minutes for lengths, `32:10` only on a player. Table in `GUIDELINES.md` section 2.
-- **⚑B8 separators:** leaning B (space between mono items); commas shown beside it in
-  `reference/elements.html` 13b for a final look.
+- **⚑B8 separators: C**, commas, after seeing both side by side.
 - **⚑B2 streaks: B**, a best run you can't lose.
 - **⚑B3 colour: C**, one palette for every app, content included. Recorded exception:
   hindsight keeps its colours as they are.

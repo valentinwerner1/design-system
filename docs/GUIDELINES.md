@@ -43,6 +43,8 @@ asking for attention on the screen and decide what wins.
   | Share | `42%` |
 
   Never the browser's locale format.
+- Items in a metadata row are one `.meta` line separated by commas: "9 Oct, 58 min,
+  5 speakers". No middle dots, no bullets.
 - Everything snaps to the 4px grid (`--space-*`). No one-off margins.
 - Numbers are tabular (set on `body`), so columns of figures line up.
 - Text never wider than `--width-prose` (68ch). Body text is left-aligned, never centred.
